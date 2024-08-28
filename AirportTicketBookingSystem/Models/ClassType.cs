@@ -8,7 +8,7 @@ namespace AirportTicketBookingSystem.Models
 {
     public enum ClassType
     {
-        Economy,
+        Economy = 1,
         Business,
         FirstClass
     }
