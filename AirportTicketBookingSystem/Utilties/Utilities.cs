@@ -23,7 +23,7 @@ namespace AirportTicketBookingSystem.Utilties
                 case 0: Console.WriteLine("Invalid Option"); PrintMenu();
                     break;
                 case 2:
-                    ProductUtilities.PrintMenu();
+                    PassengerUtilities.PrintMenu();
                     break;
             }
         }

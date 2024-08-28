@@ -23,10 +23,7 @@ namespace AirportTicketBookingSystem.Models
         }
         public void BookFlight()
         {
-            foreach (var flight in Utilities.flights)
-            {
-                Console.WriteLine($"Flight ID: {flight.FlightId}, Departure: {flight.DepartureDate} from {flight.DeparetureCountry} ({flight.DepartureAirport}) to {flight.DestinationCountry} ({flight.ArrivalAirport})");
-            }
+            PassengerUtilities.CheckAvailableFlights();
             Console.WriteLine("Enter the flight ID you want to book");
             int flightId = Convert.ToInt32(Console.ReadLine());
             Flight? selectedFlight = Utilities.flights.FirstOrDefault(f => f.FlightId == flightId);

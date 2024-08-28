@@ -30,6 +30,19 @@ namespace AirportTicketBookingSystem.Utilties
                 case 1:
                     passenger.BookFlight();
                     break;
+                case 2:
+                    CheckAvailableFlights();
+                    break;
+            }
+        }
+        public static void CheckAvailableFlights()
+        {
+            var availableFlights = Utilities.flights
+                .Where(f => DateTime.TryParse(f.DepartureDate, out DateTime departureDate) && departureDate > DateTime.Now)
+                .ToList();
+            foreach (var flight in availableFlights)
+            {
+                Console.WriteLine(flight);
             }
         }
     }
