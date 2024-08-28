@@ -4,6 +4,7 @@ namespace AirportTicketBookingSystem.Utilties
 {
     public class PassengerUtilities
     {
+        public static int incrementBookingId = 1;
         public static void PrintMenu()
         {
             Console.WriteLine("Welcome Passenger!");
@@ -13,8 +14,8 @@ namespace AirportTicketBookingSystem.Utilties
             string? lastName = Console.ReadLine();
             Console.WriteLine("ID");
             int id = Convert.ToInt32(Console.ReadLine());
-
             Passenger passenger = new Passenger(firstName, lastName, id);
+            Manager.AllPassengers!.Add(passenger);
             while (true)
             {
                 Console.WriteLine("1-Book a Flight\n2-Check Available flights\n3-Manage flights\n4-Exit");
@@ -54,8 +55,10 @@ namespace AirportTicketBookingSystem.Utilties
             {
                 Console.WriteLine("1-Economy\n2-Business\n3-First Class");
                 int classType = Convert.ToInt32(Console.ReadLine());
-                Booking booking = new Booking(passenger.Bookings.Count + 1, $"{passenger.FirstName} {passenger.LastName}", passenger.PassengerId, selectedFlight, (ClassType)classType);
+                Booking booking = new Booking(incrementBookingId, $"{passenger.FirstName} {passenger.LastName}", passenger.PassengerId, selectedFlight, (ClassType)classType);
+                incrementBookingId++;
                 passenger.Bookings.Add(booking);
+                Manager.AllBookings!.Add(booking);
                 Console.WriteLine("Booking Successful! Booking details:");
                 Console.WriteLine(booking.ToString());
             }

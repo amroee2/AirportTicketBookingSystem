@@ -14,17 +14,24 @@ namespace AirportTicketBookingSystem.Utilties
         {
             flights = GenerateFlights(20);
             Console.Clear();
-            Console.WriteLine("Welcome!\nYou Are?\n1-Manager\n2-Passenger");
 
-            int op = Convert.ToInt32(Console.ReadLine());
-
-            switch (op)
+            while (true)
             {
-                case 0: Console.WriteLine("Invalid Option"); PrintMenu();
-                    break;
-                case 2:
-                    PassengerUtilities.PrintMenu();
-                    break;
+                Console.WriteLine("Welcome!\nYou Are?\n1-Manager\n2-Passenger");
+
+                int op = Convert.ToInt32(Console.ReadLine());
+                switch (op)
+                {
+                    case 0:
+                        Console.WriteLine("Invalid Option"); PrintMenu();
+                        break;
+                    case 1:
+                        ManagerUtilities.PrintMenu();
+                        break;
+                    case 2:
+                        PassengerUtilities.PrintMenu();
+                        break;
+                }
             }
         }
         static List<Flight> GenerateFlights(int numberOfFlights)
