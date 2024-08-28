@@ -35,6 +35,9 @@ namespace AirportTicketBookingSystem.Utilties
                     case 2:
                         CheckAvailableFlights();
                         break;
+                    case 3:
+                        ManageBookings(passenger);
+                        break;
                     default:
                         Console.WriteLine("Invalid Option");
                         break;
@@ -70,6 +73,44 @@ namespace AirportTicketBookingSystem.Utilties
             foreach (var flight in availableFlights)
             {
                 Console.WriteLine(flight);
+            }
+        }
+        public static void ManageBookings(Passenger passenger)
+        {
+            Console.WriteLine("Manage bookings\n1-View personal bookings\n2-Cancel a booking\n0-Go Back");
+            int op = Convert.ToInt32(Console.ReadLine());
+            while (true)
+            {
+                switch (op)
+                {
+                    case 0:
+                        Console.WriteLine("Exiting");
+                        return;
+                    case 1:
+                        foreach (var booking in passenger.Bookings)
+                        {
+                            Console.WriteLine(booking);
+                        }
+                        break;
+                    case 2:
+                        Console.WriteLine("Enter the booking ID you want to cancel");
+                        int bookingId = Convert.ToInt32(Console.ReadLine());
+                        Booking? selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+                        if (selectedBooking == null)
+                        {
+                            Console.WriteLine("Invalid Booking ID");
+                            return;
+                        }
+                        else
+                        {
+                            passenger.Bookings.Remove(selectedBooking);
+                            Console.WriteLine("Booking Cancelled");
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Option");
+                        break;
+                }
             }
         }
     }
