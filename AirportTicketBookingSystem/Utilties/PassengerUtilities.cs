@@ -18,21 +18,48 @@ namespace AirportTicketBookingSystem.Utilties
             string? lastName = Console.ReadLine();
             Console.WriteLine("ID");
             int id = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("1-Book a Flight\n2-Check Available flights\n3-Manage flights\n4-Exit");
+
             Passenger passenger = new Passenger(firstName, lastName, id);
-            int op = Convert.ToInt32(Console.ReadLine());
-            switch (op)
+            while (true)
             {
-                case 0:
-                    Console.WriteLine("Invalid Option");
-                    PrintMenu();
-                    break;
-                case 1:
-                    passenger.BookFlight();
-                    break;
-                case 2:
-                    CheckAvailableFlights();
-                    break;
+                Console.WriteLine("1-Book a Flight\n2-Check Available flights\n3-Manage flights\n4-Exit");
+                int op = Convert.ToInt32(Console.ReadLine());
+                switch (op)
+                {
+                    case 4:
+                        Console.WriteLine("Exiting");
+                        return;
+                    case 1:
+                        BookFlight(passenger);
+                        break;
+                    case 2:
+                        CheckAvailableFlights();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid Option");
+                        break;
+                }
+            }
+        }
+        public static void BookFlight(Passenger passenger)
+        {
+            CheckAvailableFlights();
+            Console.WriteLine("Enter the flight ID you want to book");
+            int flightId = Convert.ToInt32(Console.ReadLine());
+            Flight? selectedFlight = Utilities.flights.FirstOrDefault(f => f.FlightId == flightId);
+            if (selectedFlight == null)
+            {
+                Console.WriteLine("Invalid Flight ID");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("1-Economy\n2-Business\n3-First Class");
+                int classType = Convert.ToInt32(Console.ReadLine());
+                Booking booking = new Booking(passenger.Bookings.Count + 1, $"{passenger.FirstName} {passenger.LastName}", passenger.PassengerId, selectedFlight, (ClassType)classType);
+                passenger.Bookings.Add(booking);
+                Console.WriteLine("Booking Successful! Booking details:");
+                Console.WriteLine(booking.ToString());
             }
         }
         public static void CheckAvailableFlights()

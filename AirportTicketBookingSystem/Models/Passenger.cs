@@ -21,27 +21,5 @@ namespace AirportTicketBookingSystem.Models
             PassengerId = passengerId;
             Bookings = new List<Booking>();
         }
-        public void BookFlight()
-        {
-            PassengerUtilities.CheckAvailableFlights();
-            Console.WriteLine("Enter the flight ID you want to book");
-            int flightId = Convert.ToInt32(Console.ReadLine());
-            Flight? selectedFlight = Utilities.flights.FirstOrDefault(f => f.FlightId == flightId);
-            if (selectedFlight == null)
-            {
-                Console.WriteLine("Invalid Flight ID");
-                return;
-            }
-            else
-            {
-                Console.WriteLine("1-Economy\n2-Business\n3-First Class");
-                int classType = Convert.ToInt32(Console.ReadLine());
-                Booking booking = new Booking(Bookings.Count + 1, $"{FirstName} {LastName}", PassengerId, selectedFlight, (ClassType)classType);
-                Bookings.Add(booking);
-                Console.WriteLine("Booking Successful! Booking details:");
-                Console.WriteLine(booking.ToString());
-            }
-        }
     }
-
 }
