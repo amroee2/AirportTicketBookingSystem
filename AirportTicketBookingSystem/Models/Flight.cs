@@ -12,7 +12,7 @@ namespace AirportTicketBookingSystem.Models
     {
         public int FlightId { get; set; }
         public string? DepartureDate { get; set; }
-        public string? DeparetureCountry { get; set; }
+        public string? DepartureCountry { get; set; }
         public string? DestinationCountry { get; set; }
         public string? DepartureAirport { get; set; }
         public string? ArrivalAirport { get; set; }
@@ -22,14 +22,14 @@ namespace AirportTicketBookingSystem.Models
         {
             FlightId = flightId;
             DepartureDate = departureDate;
-            DeparetureCountry = departureCountry;
+            DepartureCountry = departureCountry;
             DestinationCountry = destinationCountry;
             DepartureAirport = departureAirport;
             ArrivalAirport = arrivalAirport;
         }
         public override string ToString()
         {
-            return $"Flight ID: {FlightId}, Departure: {DepartureDate} from {DeparetureCountry} ({DepartureAirport}) to {DestinationCountry} ({ArrivalAirport})";
+            return $"Flight ID: {FlightId}, Departure: {DepartureDate} from {DepartureCountry} ({DepartureAirport}) to {DestinationCountry} ({ArrivalAirport})";
         }
     }
 }
