@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirportTicketBookingSystem
+namespace AirportTicketBookingSystem.Models
 {
     public class Flight
     {
@@ -20,7 +20,7 @@ namespace AirportTicketBookingSystem
         {
             get
             {
-                switch (this.ClassType)
+                switch (ClassType)
                 {
                     case ClassType.Economy:
                         return 100;
@@ -35,13 +35,13 @@ namespace AirportTicketBookingSystem
         public Flight(int flightId, string departureDate, string departureCountry,
             string destinationCountry, string departureAirport, string arrivalAirport, ClassType classType)
         {
-            this.FlightId = flightId;
-            this.DepartureDate = departureDate;
-            this.DeparetureCountry = departureCountry;
-            this.DestinationCountry = destinationCountry;
-            this.DepartureAirport = departureAirport;
-            this.ArrivalAirport = arrivalAirport;
-            this.ClassType = classType;
+            FlightId = flightId;
+            DepartureDate = departureDate;
+            DeparetureCountry = departureCountry;
+            DestinationCountry = destinationCountry;
+            DepartureAirport = departureAirport;
+            ArrivalAirport = arrivalAirport;
+            ClassType = classType;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirportTicketBookingSystem
+namespace AirportTicketBookingSystem.Models
 {
     public class Booking
     {
@@ -15,10 +15,10 @@ namespace AirportTicketBookingSystem
 
         public Booking(int bookingId, string passengerName, int passengerId, Flight flight)
         {
-            this.BookingId = bookingId;
-            this.PassengerName = passengerName;
-            this.PassengerId = passengerId;
-            this.Flight = flight;
+            BookingId = bookingId;
+            PassengerName = passengerName;
+            PassengerId = passengerId;
+            Flight = flight;
         }
     }
 }

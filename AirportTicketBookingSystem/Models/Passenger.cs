@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirportTicketBookingSystem
+namespace AirportTicketBookingSystem.Models
 {
     public class Passenger
     {
@@ -14,7 +14,7 @@ namespace AirportTicketBookingSystem
         public List<Booking>? Bookings { get; set; }
 
         public Passenger(string firstName, string lastName, int passengerId)
-        { 
+        {
             FirstName = firstName;
             LastName = lastName;
             PassengerId = passengerId;
