@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Utilties
 {
-    public class ProductUtilities
+    public class PassengerUtilities
     {
         public static void PrintMenu()
         {
