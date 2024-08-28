@@ -10,9 +10,8 @@ namespace AirportTicketBookingSystem
     public class Flight
     {
         public int FlightId { get; set; }
-        public int price;
         public string? DepartureDate { get; set; }
-        public string? DeparetureCountr { get; set; }
+        public string? DeparetureCountry { get; set; }
         public string? DestinationCountry { get; set; }
         public string? DepartureAirport { get; set; }
         public string? ArrivalAirport { get; set; }
@@ -33,6 +32,16 @@ namespace AirportTicketBookingSystem
                 return 0;
             }
         }
-
+        public Flight(int flightId, string departureDate, string departureCountry,
+            string destinationCountry, string departureAirport, string arrivalAirport, ClassType classType)
+        {
+            this.FlightId = flightId;
+            this.DepartureDate = departureDate;
+            this.DeparetureCountry = departureCountry;
+            this.DestinationCountry = destinationCountry;
+            this.DepartureAirport = departureAirport;
+            this.ArrivalAirport = arrivalAirport;
+            this.ClassType = classType;
+        }
     }
 }
