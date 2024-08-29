@@ -38,7 +38,7 @@ namespace AirportTicketBookingSystem.Utilties
                         BookFlight(passenger);
                         break;
                     case 2:
-                        CheckAvailableFlights();
+                        CheckAvailableFlights(Utilities.flights);
                         break;
                     case 3:
                         ManageBookings(passenger);
@@ -88,7 +88,7 @@ namespace AirportTicketBookingSystem.Utilties
                 Console.WriteLine(flight);
             }
         }
-        public static void CheckAvailableFlights()
+        public static void CheckAvailableFlights(List<Flight> FlightsList)
         {
             Console.WriteLine("Search by\n1-Departure country\n2-Destination country\n3-Departure date" +
                 "\n4-Departure airport\n5-Arrival airport\n6-All\n0-Exit");
@@ -99,7 +99,7 @@ namespace AirportTicketBookingSystem.Utilties
                 case 1:
                     Console.WriteLine("Enter the departure country");
                     string departureCountry = Console.ReadLine();
-                    var flights = Utilities.flights.Where(f => f.DepartureCountry == departureCountry).ToList();
+                    var flights = FlightsList.Where(f => f.DepartureCountry == departureCountry).ToList();
                     foreach (var flight in flights)
                     {
                         Console.WriteLine(flight);
@@ -108,7 +108,7 @@ namespace AirportTicketBookingSystem.Utilties
                 case 2:
                     Console.WriteLine("Enter the destination country");
                     string destinationCountry = Console.ReadLine();
-                    flights = Utilities.flights.Where(f => f.DestinationCountry == destinationCountry).ToList();
+                    flights = FlightsList.Where(f => f.DestinationCountry == destinationCountry).ToList();
                     foreach (var flight in flights)
                     {
                         Console.WriteLine(flight);
@@ -117,7 +117,7 @@ namespace AirportTicketBookingSystem.Utilties
                 case 3:
                     Console.WriteLine("Enter the departure date");
                     string departureDate = Console.ReadLine();
-                    flights = Utilities.flights.Where(f => f.DepartureDate == departureDate).ToList();
+                    flights = FlightsList.Where(f => f.DepartureDate == departureDate).ToList();
                     foreach (var flight in flights)
                     {
                         Console.WriteLine(flight);
@@ -126,7 +126,7 @@ namespace AirportTicketBookingSystem.Utilties
                 case 4:
                     Console.WriteLine("Enter the departure airport");
                     string departureAirport = Console.ReadLine();
-                    flights = Utilities.flights.Where(f => f.DepartureAirport == departureAirport).ToList();
+                    flights = FlightsList.Where(f => f.DepartureAirport == departureAirport).ToList();
                     foreach (var flight in flights)
                     {
                         Console.WriteLine(flight);
@@ -135,14 +135,14 @@ namespace AirportTicketBookingSystem.Utilties
                 case 5:
                     Console.WriteLine("Enter the arrival airport");
                     string arrivalAirport = Console.ReadLine();
-                    flights = Utilities.flights.Where(f => f.ArrivalAirport == arrivalAirport).ToList();
+                    flights = FlightsList.Where(f => f.ArrivalAirport == arrivalAirport).ToList();
                     foreach (var flight in flights)
                     {
                         Console.WriteLine(flight);
                     }
                     break;
                 case 6:
-                    foreach (var flight in Utilities.flights)
+                    foreach (var flight in FlightsList)
                     {
                         Console.WriteLine(flight);
                     }

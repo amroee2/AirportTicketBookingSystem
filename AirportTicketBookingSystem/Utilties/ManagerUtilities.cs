@@ -35,10 +35,13 @@ namespace AirportTicketBookingSystem.Utilties
         {
             while (true)
             {
-                Console.WriteLine("Filter by\n1-Booking ID\n2-Flight ID\n3-Passenger ID\n4-Flight Information");
+                Console.WriteLine("Filter by\n1-Booking ID\n2-Flight ID\n3-Passenger ID\n4-Flight Information\n0-Exit");
                 int op = Convert.ToInt32(Console.ReadLine());
                 switch (op)
                 {
+                    case 0:
+                        Console.WriteLine("Exiting");
+                        return;
                     case 1:
                         Console.WriteLine("Enter Booking ID");
                         int bookingId = Convert.ToInt32(Console.ReadLine());
@@ -85,7 +88,8 @@ namespace AirportTicketBookingSystem.Utilties
                         }
                         break;
                     case 4:
-                        PassengerUtilities.CheckAvailableFlights();
+                        List<Flight>? flights = Manager.AllBookings!.Select(flights => flights.Flight).Distinct().ToList();
+                        PassengerUtilities.CheckAvailableFlights(flights);
                         break;
                 }
             }
