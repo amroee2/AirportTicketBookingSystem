@@ -21,5 +21,10 @@ namespace AirportTicketBookingSystem.Models
             PassengerId = passengerId;
             Bookings = new List<Booking>();
         }
+
+        public override string ToString()
+        {
+            return $"Passenger ID: {PassengerId}, Name: {FirstName} {LastName}";
+        }
     }
 }

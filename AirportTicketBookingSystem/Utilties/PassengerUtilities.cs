@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AirportTicketBookingSystem.Utilties
 {
@@ -8,14 +9,23 @@ namespace AirportTicketBookingSystem.Utilties
         public static void PrintMenu()
         {
             Console.WriteLine("Welcome Passenger!");
-            Console.WriteLine("First Name");
-            string? firstName = Console.ReadLine();
-            Console.WriteLine("Last Name");
-            string? lastName = Console.ReadLine();
             Console.WriteLine("ID");
             int id = Convert.ToInt32(Console.ReadLine());
-            Passenger passenger = new Passenger(firstName, lastName, id);
-            Manager.AllPassengers!.Add(passenger);
+            Passenger passenger = CheckPassenger(id);
+            if(passenger is not null)
+            {
+                Console.WriteLine("Welcome back!");
+                Console.WriteLine(passenger);
+            }
+            else
+            {
+                Console.WriteLine("First Name");
+                string? firstName = Console.ReadLine();
+                Console.WriteLine("Last Name");
+                string? lastName = Console.ReadLine();
+                passenger = new Passenger(firstName, lastName, id);
+                Manager.AllPassengers!.Add(passenger);
+            }        
             while (true)
             {
                 Console.WriteLine("1-Book a Flight\n2-Check Available flights\n3-Manage flights\n4-Exit");
@@ -175,6 +185,11 @@ namespace AirportTicketBookingSystem.Utilties
                         break;
                 }
             }
+        }
+        public static Passenger CheckPassenger(int passengerId)
+        {
+            var passenger = Manager.AllPassengers!.FirstOrDefault(p => p.PassengerId == passengerId);
+            return passenger;
         }
     }
 }
