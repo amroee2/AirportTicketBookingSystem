@@ -1,5 +1,4 @@
 ﻿using AirportTicketBookingSystem.Models;
-using System.Security.Cryptography.X509Certificates;
 
 namespace AirportTicketBookingSystem.Utilties
 {
@@ -56,6 +55,12 @@ namespace AirportTicketBookingSystem.Utilties
             Console.WriteLine("Enter the flight ID you want to book");
             int flightId = Convert.ToInt32(Console.ReadLine());
             Flight? selectedFlight = Utilities.flights.FirstOrDefault(f => f.FlightId == flightId);
+            var existingBooking = passenger.Bookings.FirstOrDefault(b => b.Flight.FlightId == flightId);
+            if (existingBooking != null)
+            {
+                Console.WriteLine("You have already booked this flight");
+                return;
+            }
             if (selectedFlight == null)
             {
                 Console.WriteLine("Invalid Flight ID");
@@ -166,6 +171,10 @@ namespace AirportTicketBookingSystem.Utilties
                         }
                         break;
                     case 2:
+                        foreach (var booking in passenger.Bookings)
+                        {
+                            Console.WriteLine(booking);
+                        }
                         Console.WriteLine("Enter the booking ID you want to cancel");
                         int bookingId = Convert.ToInt32(Console.ReadLine());
                         Booking? selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);

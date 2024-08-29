@@ -17,6 +17,7 @@ namespace AirportTicketBookingSystem.Utilties
 
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Welcome!\nYou Are?\n1-Manager\n2-Passenger");
 
                 int op = Convert.ToInt32(Console.ReadLine());
