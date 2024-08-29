@@ -12,11 +12,6 @@ namespace AirportTicketBookingSystem.Utilties
         public static void PrintMenu()
         {
             Console.WriteLine("Welcome Manager!");
-            Console.WriteLine("First Name");
-            string? firstName = Console.ReadLine();
-            Console.WriteLine("Last Name");
-            string? lastName = Console.ReadLine();
-            Manager manager = new Manager(firstName, lastName);
             while (true)
             {
                 Console.WriteLine("1-Filter Bookings\n0-Go back");
