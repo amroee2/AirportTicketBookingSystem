@@ -1,4 +1,5 @@
-﻿using AirportTicketBookingSystem.Models;
+﻿using AirportTicketBookingSystem.Airport_Repository;
+using AirportTicketBookingSystem.Models;
 
 namespace AirportTicketBookingSystem.Utilties
 {
@@ -9,7 +10,7 @@ namespace AirportTicketBookingSystem.Utilties
             Console.WriteLine("Welcome Manager!");
             while (true)
             {
-                Console.WriteLine("1-Filter Bookings\n0-Go back");
+                Console.WriteLine("1-Filter Bookings\n2-Export to CSV\n0-Go back");
                 int op = Convert.ToInt32(Console.ReadLine());
 
                 switch (op)
@@ -17,6 +18,9 @@ namespace AirportTicketBookingSystem.Utilties
                     case 0: return;
                     case 1:
                         FilterBookings();
+                        break;
+                    case 2:
+                        FlightsRepository.ExportToCsv();
                         break;
                     default:
                         Console.WriteLine("Invalid Option");
