@@ -20,7 +20,10 @@ namespace AirportTicketBookingSystem.Utilties
                         FilterBookings();
                         break;
                     case 2:
-                        FlightsRepository.ExportToCsv();
+                        _ = FlightsRepository.ExportToCsvAsync();
+                        break;
+                    case 3:
+                        _ = Utilities.GenerateFlights();
                         break;
                     default:
                         Console.WriteLine("Invalid Option");

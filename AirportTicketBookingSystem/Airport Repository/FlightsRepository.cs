@@ -10,7 +10,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
 {
     public class FlightsRepository
     {
-        public static void ExportToCsv()
+        public async static Task ExportToCsvAsync()
         {
             try
             {
@@ -22,7 +22,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
                     csvContent.AppendLine($"{flight.FlightId},{flight.DepartureDate},{flight.DepartureCountry},{flight.DestinationCountry},{flight.DepartureAirport},{flight.ArrivalAirport}");
                 }
                 string filePath = Path.Combine("C:\\Users\\amro qadadha\\source\\repos\\AirportTicketBookingSystem\\AirportTicketBookingSystem\\Airport Repository\\", "flights.csv");
-                File.WriteAllText(filePath, csvContent.ToString());
+                await File.WriteAllTextAsync(filePath, csvContent.ToString());
                 Console.WriteLine("Flights exported to flights.csv");
             }
             catch (Exception e)
@@ -30,14 +30,14 @@ namespace AirportTicketBookingSystem.Airport_Repository
                 Console.WriteLine(e.Message);
             }
         }
-        public static List<Flight> ImportFromCsv()
+        public async static Task<List<Flight>> ImportFromCsvAsync()
         {
             List<Flight> flights = new List<Flight>();
             try
             {
                 string filePath = Path.Combine("C:\\Users\\amro qadadha\\source\\repos\\AirportTicketBookingSystem\\AirportTicketBookingSystem\\Airport Repository\\", "flights.csv");
 
-                string[] lines = File.ReadAllLines(filePath);
+                 string[] lines = await File.ReadAllLinesAsync(filePath);
 
                 for (int i = 1; i < lines.Length; i++)
                 {
@@ -46,7 +46,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
 
                     if (values.Length == 6)
                     {
-                        Flight flight = new Flight(Convert.ToInt32(values[0]), values[1], values[2], values[3], values[4], values[5]);
+                         Flight flight = new Flight(Convert.ToInt32(values[0]), values[1], values[2], values[3], values[4], values[5]);
 
                         flights.Add(flight);
                     }
