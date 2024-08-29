@@ -10,7 +10,7 @@ namespace AirportTicketBookingSystem.Utilties
             Console.WriteLine("Welcome Manager!");
             while (true)
             {
-                Console.WriteLine("1-Filter Bookings\n2-Export to CSV\n0-Go back");
+                Console.WriteLine("1-Filter Bookings\n2-Export to CSV\n3-Import from CSV\n0-Go back");
                 int op = Convert.ToInt32(Console.ReadLine());
 
                 switch (op)

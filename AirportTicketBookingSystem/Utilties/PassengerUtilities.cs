@@ -157,7 +157,7 @@ namespace AirportTicketBookingSystem.Utilties
 
             while (true)
             {
-                Console.WriteLine("Manage bookings\n1-View personal bookings\n2-Cancel a booking\n0-Go Back");
+                Console.WriteLine("Manage bookings\n1-View personal bookings\n2-Cancel a booking\n3-Modify a booking\n0-Go Back");
                 int op = Convert.ToInt32(Console.ReadLine());
                 switch (op)
                 {
@@ -187,6 +187,27 @@ namespace AirportTicketBookingSystem.Utilties
                         {
                             passenger.Bookings.Remove(selectedBooking);
                             Console.WriteLine("Booking Cancelled");
+                        }
+                        break;
+                    case 3:
+                        foreach (var booking in passenger.Bookings)
+                        {
+                            Console.WriteLine(booking);
+                        }
+                        Console.WriteLine("Enter the booking ID you want to modify");
+                        bookingId = Convert.ToInt32(Console.ReadLine());
+                        selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+                        if (selectedBooking == null)
+                        {
+                            Console.WriteLine("Invalid Booking ID");
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("1-Economy\n2-Business\n3-First Class");
+                            int classType = Convert.ToInt32(Console.ReadLine());
+                            selectedBooking.ClassType = (ClassType)classType;
+                            Console.WriteLine("Booking Modified");
                         }
                         break;
                     default:
