@@ -5,7 +5,7 @@ FlightId,DepartureDate,DeparetureCountry,DestinationCountry,DepartureAirport,Arr
 4,4/7/2025 12:00:00 AM,Germany,USA,LHR,JFK
 5,12/20/2024 12:00:00 AM,UK,Japan,CDG,CDG
 6,7/9/2025 12:00:00 AM,Japan,Japan,LHR,FRA
-7,10/15/1988 12:00:00 AM,Germany,France,JFK,FRA
+7,10/15/2025 12:00:00 AM,Germany,France,JFK,FRA
 8,3/20/2025 12:00:00 AM,France,USA,FRA,NRT
 9,6/8/2025 12:00:00 AM,France,France,LHR,LHR
 10,7/17/2025 12:00:00 AM,France,UK,NRT,NRT

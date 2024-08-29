@@ -14,7 +14,7 @@ namespace AirportTicketBookingSystem.Models
     public class Flight
     {
         [Required(ErrorMessage = "FlightId is required.")]
-        [UniqueFlightId(ErrorMessage = "Flight with this id already exists")]
+        [UniqueFlightId(ErrorMessage = "Flight id must be unique")]
         public int FlightId { get; set; }
 
         [Required(ErrorMessage = "Departure Date is required.")]

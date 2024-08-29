@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.Models;
+using System.Reflection;
 
 namespace AirportTicketBookingSystem.Utilties
 {
@@ -27,11 +28,11 @@ namespace AirportTicketBookingSystem.Utilties
             }        
             while (true)
             {
-                Console.WriteLine("1-Book a Flight\n2-Check Available flights\n3-Manage flights\n4-Exit");
+                Console.WriteLine("1-Book a Flight\n2-Check Available flights\n3-Manage flights\n4-Check flight constraints\n0-Exit");
                 int op = Convert.ToInt32(Console.ReadLine());
                 switch (op)
                 {
-                    case 4:
+                    case 0:
                         Console.WriteLine("Exiting");
                         return;
                     case 1:
@@ -42,6 +43,9 @@ namespace AirportTicketBookingSystem.Utilties
                         break;
                     case 3:
                         ManageBookings(passenger);
+                        break;
+                    case 4:
+                        CheckFlightConstraints();
                         break;
                     default:
                         Console.WriteLine("Invalid Option");
@@ -219,6 +223,31 @@ namespace AirportTicketBookingSystem.Utilties
         {
             var passenger = Manager.AllPassengers!.FirstOrDefault(p => p.PassengerId == passengerId);
             return passenger;
+        }
+        public static void CheckFlightConstraints()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var type = assembly.GetType("AirportTicketBookingSystem.Models.Flight");
+            var properties = type.GetProperties();
+            foreach (var property in properties)
+            {
+                Console.WriteLine($"Property: {property.Name}");
+                Console.WriteLine($"- Type: {property.PropertyType.Name}");
+                var attributes = property.GetCustomAttributes();
+                foreach (var attribute in attributes)
+                {
+                    Console.WriteLine($"- Constraint: {attribute.GetType().Name}");
+                    var errorMessageProperty = attribute.GetType().GetProperty("ErrorMessage");
+                    if (errorMessageProperty != null)
+                    {
+                        var errorMessage = errorMessageProperty.GetValue(attribute) as string;
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            Console.WriteLine($"  - Error Message: {errorMessage}");
+                        }
+                    }
+                }
+            }
         }
     }
 }
