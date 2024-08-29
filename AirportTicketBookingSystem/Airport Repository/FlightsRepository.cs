@@ -22,7 +22,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
                 {
                     csvContent.AppendLine($"{flight.FlightId},{flight.DepartureDate},{flight.DepartureCountry},{flight.DestinationCountry},{flight.DepartureAirport},{flight.ArrivalAirport}");
                 }
-                string filePath = Path.Combine("C:\\Users\\amro qadadha\\source\\repos\\AirportTicketBookingSystem\\AirportTicketBookingSystem\\Airport Repository\\", "flights.csv");
+                string filePath = Path.Combine("./flights.csv");
                 await File.WriteAllTextAsync(filePath, csvContent.ToString());
                 Console.WriteLine("Flights exported to flights.csv");
             }
@@ -35,7 +35,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
         {
             try
             {
-                string filePath = Path.Combine("C:\\Users\\amro qadadha\\source\\repos\\AirportTicketBookingSystem\\AirportTicketBookingSystem\\Airport Repository\\", "flights.csv");
+                string filePath = Path.Combine("./flights.csv");
 
                 string[] lines = await File.ReadAllLinesAsync(filePath);
 
