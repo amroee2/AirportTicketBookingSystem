@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirportTicketBookingSystem.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace AirportTicketBookingSystem.Models
     public class Flight
     {
         [Required(ErrorMessage = "FlightId is required.")]
+        [UniqueFlightId(ErrorMessage = "Flight with this id already exists")]
         public int FlightId { get; set; }
 
         [Required(ErrorMessage = "Departure Date is required.")]

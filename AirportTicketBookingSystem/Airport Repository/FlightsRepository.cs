@@ -31,9 +31,8 @@ namespace AirportTicketBookingSystem.Airport_Repository
                 Console.WriteLine(e.Message);
             }
         }
-        public async static Task<List<Flight>> ImportFromCsvAsync()
+        public async static Task ImportFromCsvAsync()
         {
-            List<Flight> flights = new List<Flight>();
             try
             {
                 string filePath = Path.Combine("C:\\Users\\amro qadadha\\source\\repos\\AirportTicketBookingSystem\\AirportTicketBookingSystem\\Airport Repository\\", "flights.csv");
@@ -57,7 +56,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
 
                         if (isValid)
                         {
-                            flights.Add(flight);
+                            Utilities.flights.Add(flight);
                         }
                         else
                         {
@@ -90,8 +89,6 @@ namespace AirportTicketBookingSystem.Airport_Repository
             {
                 Console.WriteLine($"An error occurred while reading the file: {e.Message}");
             }
-
-            return flights;
         }
     }
 }

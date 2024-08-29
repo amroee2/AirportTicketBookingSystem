@@ -40,7 +40,7 @@ namespace AirportTicketBookingSystem.Utilties
         }
         public async static Task GenerateFlights()
         {
-            flights = await FlightsRepository.ImportFromCsvAsync();
+            await Airport_Repository.FlightsRepository.ImportFromCsvAsync();
         }
     }
 

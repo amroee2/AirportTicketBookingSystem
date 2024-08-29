@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AirportTicketBookingSystem.Models
+namespace AirportTicketBookingSystem.Validation
 {
     public class FutureDateAttribute : ValidationAttribute
     {
