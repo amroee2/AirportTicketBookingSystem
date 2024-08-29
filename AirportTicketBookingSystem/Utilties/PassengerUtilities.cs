@@ -80,9 +80,7 @@ namespace AirportTicketBookingSystem.Utilties
         }
         public static void CheckAvailableFlightsByDate(DateTime time)
         {
-            var availableFlights = Utilities.flights
-                .Where(f => DateTime.TryParse(f.DepartureDate, out DateTime departureDate) && departureDate > time)
-                .ToList();
+            var availableFlights = Utilities.flights.Where(f => f.DepartureDate > time).ToList();
             foreach (var flight in availableFlights)
             {
                 Console.WriteLine(flight);
@@ -117,7 +115,8 @@ namespace AirportTicketBookingSystem.Utilties
                 case 3:
                     Console.WriteLine("Enter the departure date");
                     string departureDate = Console.ReadLine();
-                    flights = FlightsList.Where(f => f.DepartureDate == departureDate).ToList();
+                    DateTime date = DateTime.Parse(departureDate);
+                    flights = FlightsList.Where(f => f.DepartureDate == date).ToList();
                     foreach (var flight in flights)
                     {
                         Console.WriteLine(flight);

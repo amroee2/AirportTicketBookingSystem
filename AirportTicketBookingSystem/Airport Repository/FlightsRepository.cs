@@ -46,7 +46,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
 
                     if (values.Length == 6)
                     {
-                         Flight flight = new Flight(Convert.ToInt32(values[0]), values[1], values[2], values[3], values[4], values[5]);
+                         Flight flight = new Flight(Convert.ToInt32(values[0]), DateTime.Parse(values[1]), values[2], values[3], values[4], values[5]);
 
                         flights.Add(flight);
                     }
