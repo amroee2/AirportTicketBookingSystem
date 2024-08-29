@@ -18,7 +18,7 @@ namespace AirportTicketBookingSystem.Models
         public string? ArrivalAirport { get; set; }
        
         public Flight(int flightId, string departureDate, string departureCountry,
-            string destinationCountry, string departureAirport, string arrivalAirport, ClassType classType)
+            string destinationCountry, string departureAirport, string arrivalAirport)
         {
             FlightId = flightId;
             DepartureDate = departureDate;

@@ -1,4 +1,5 @@
-﻿using AirportTicketBookingSystem.Models;
+﻿using AirportTicketBookingSystem.Airport_Repository;
+using AirportTicketBookingSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,10 @@ namespace AirportTicketBookingSystem.Utilties
         public static List<Flight> flights = new List<Flight>();
         public static void PrintMenu()
         {
-            flights = GenerateFlights(20);
-            Console.Clear();
+            flights = FlightsRepository.ImportFromCsv();
 
             while (true)
             {
-                Console.Clear();
                 Console.WriteLine("Welcome!\nYou Are?\n1-Manager\n2-Passenger\n3-Exit");
 
                 int op = Convert.ToInt32(Console.ReadLine());
@@ -55,7 +54,7 @@ namespace AirportTicketBookingSystem.Utilties
                 string arrivalAirport = airports[random.Next(airports.Length)];
                 ClassType classType = (ClassType)classTypes.GetValue(random.Next(classTypes.Length));
 
-                Flight flight = new Flight(flightId, departureDate, departureCountry, destinationCountry, departureAirport, arrivalAirport, classType);
+                Flight flight = new Flight(flightId, departureDate, departureCountry, destinationCountry, departureAirport, arrivalAirport);
                 flights.Add(flight);
             }
 
