@@ -17,6 +17,7 @@ namespace AirportTicketBookingSystem.Models
 
         [Required(ErrorMessage = "Departure Date is required.")]
         [DataType(DataType.Date)]
+        [FutureDate(ErrorMessage = "Departure Date must be a future date.")]
         public DateTime DepartureDate { get; set; }
 
         [Required(ErrorMessage = "Departure Country is required.")]

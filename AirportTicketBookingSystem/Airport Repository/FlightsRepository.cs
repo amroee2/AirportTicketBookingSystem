@@ -2,6 +2,7 @@
 using AirportTicketBookingSystem.Utilties;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
             {
                 string filePath = Path.Combine("C:\\Users\\amro qadadha\\source\\repos\\AirportTicketBookingSystem\\AirportTicketBookingSystem\\Airport Repository\\", "flights.csv");
 
-                 string[] lines = await File.ReadAllLinesAsync(filePath);
+                string[] lines = await File.ReadAllLinesAsync(filePath);
 
                 for (int i = 1; i < lines.Length; i++)
                 {
@@ -46,17 +47,44 @@ namespace AirportTicketBookingSystem.Airport_Repository
 
                     if (values.Length == 6)
                     {
-                         Flight flight = new Flight(Convert.ToInt32(values[0]), DateTime.Parse(values[1]), values[2], values[3], values[4], values[5]);
+                        Flight flight = new Flight(Convert.ToInt32(values[0]), DateTime.Parse(values[1]), values[2], values[3], values[4], values[5]);
 
-                        flights.Add(flight);
+                        // Validate the flight object
+                        var context = new ValidationContext(flight, serviceProvider: null, items: null);
+                        var results = new List<ValidationResult>();
+
+                        bool isValid = Validator.TryValidateObject(flight, context, results, true);
+
+                        if (isValid)
+                        {
+                            flights.Add(flight);
+                        }
+                        else
+                        {
+                            foreach (var validationResult in results)
+                            {
+                                Manager.errorMessages.Add($"Line {i + 1}: {validationResult.ErrorMessage}");
+                            }
+                        }
                     }
                     else
                     {
-                        Console.WriteLine($"Invalid line format: {line}");
+                        Manager.errorMessages.Add($"Line {i + 1}: Invalid line format: {line}");
                     }
                 }
 
-                Console.WriteLine("Flights imported from flights.csv");
+                if (Manager.errorMessages.Any())
+                {
+                    Console.WriteLine("The following errors were found:");
+                    foreach (var errorMessage in Manager.errorMessages)
+                    {
+                        Console.WriteLine(errorMessage);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Flights imported successfully from flights.csv");
+                }
             }
             catch (Exception e)
             {

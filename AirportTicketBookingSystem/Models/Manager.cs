@@ -11,5 +11,7 @@ namespace AirportTicketBookingSystem.Models
         public static List<Booking>? AllBookings { get; set; } = new List<Booking>();
         public static List<Passenger>? AllPassengers { get; set; } = new List<Passenger>();
 
+        public static List<string> errorMessages = new List<string>();
+
     }
 }

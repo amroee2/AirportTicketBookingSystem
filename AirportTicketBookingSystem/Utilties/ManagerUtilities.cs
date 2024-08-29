@@ -10,7 +10,7 @@ namespace AirportTicketBookingSystem.Utilties
             Console.WriteLine("Welcome Manager!");
             while (true)
             {
-                Console.WriteLine("1-Filter Bookings\n2-Export to CSV\n3-Import from CSV\n0-Go back");
+                Console.WriteLine("1-Filter Bookings\n2-Export to CSV\n3-Import from CSV\n4-View error messages from last import\n0-Go back");
                 int op = Convert.ToInt32(Console.ReadLine());
 
                 switch (op)
@@ -24,6 +24,12 @@ namespace AirportTicketBookingSystem.Utilties
                         break;
                     case 3:
                         _ = Utilities.GenerateFlights();
+                        break;
+                    case 4:
+                        foreach (var error in Manager.errorMessages)
+                        {
+                            Console.WriteLine(error);
+                        }
                         break;
                     default:
                         Console.WriteLine("Invalid Option");
