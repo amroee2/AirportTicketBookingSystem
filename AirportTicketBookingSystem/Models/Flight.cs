@@ -17,8 +17,6 @@ namespace AirportTicketBookingSystem.Models
 
         [Required(ErrorMessage = "Departure Date is required.")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Range(typeof(DateTime), "today", "9999-12-31", ErrorMessage = "Departure Date must be today or in the future.")]
         public DateTime DepartureDate { get; set; }
 
         [Required(ErrorMessage = "Departure Country is required.")]
