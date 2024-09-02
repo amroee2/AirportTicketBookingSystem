@@ -1,8 +1,11 @@
 ﻿using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Utilties;
+using CsvHelper;
+using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,40 +18,43 @@ namespace AirportTicketBookingSystem.Airport_Repository
         {
             try
             {
-                StringBuilder csvContent = new StringBuilder();
-                csvContent.AppendLine("FlightId,DepartureDate,DeparetureCountry,DestinationCountry,DepartureAirport,ArrivalAirport");
+                string baseDirectory = AppContext.BaseDirectory;
+                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture);
 
-                foreach (var flight in Utilities.flights)
+                using (var writer = new StreamWriter(filePath))
+                using (var csv = new CsvWriter(writer, config))
                 {
-                    csvContent.AppendLine($"{flight.FlightId},{flight.DepartureDate},{flight.DepartureCountry},{flight.DestinationCountry},{flight.DepartureAirport},{flight.ArrivalAirport}");
+                    await csv.WriteRecordsAsync(Utilities.flights);
                 }
-                string filePath = Path.Combine("./flights.csv");
-                await File.WriteAllTextAsync(filePath, csvContent.ToString());
+
                 Console.WriteLine("Flights exported to flights.csv");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine($"An error occurred while writing to the file: {e.Message}");
             }
         }
+
         public async static Task ImportFromCsvAsync()
         {
             try
             {
-                string filePath = Path.Combine("./flights.csv");
+                string baseDirectory = AppContext.BaseDirectory;
 
-                string[] lines = await File.ReadAllLinesAsync(filePath);
+                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
 
-                for (int i = 1; i < lines.Length; i++)
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+                using (var reader = new StreamReader(filePath))
+                using (var csv = new CsvReader(reader, config))
                 {
-                    string line = lines[i];
-                    string[] values = line.Split(',');
+                    var flights = new List<Flight>();
 
-                    if (values.Length == 6)
+                    while (await csv.ReadAsync())
                     {
-                        Flight flight = new Flight(Convert.ToInt32(values[0]), DateTime.Parse(values[1]), values[2], values[3], values[4], values[5]);
+                        var flight = csv.GetRecord<Flight>();
 
-                        // Validate the flight object
                         var context = new ValidationContext(flight, serviceProvider: null, items: null);
                         var results = new List<ValidationResult>();
 
@@ -56,20 +62,18 @@ namespace AirportTicketBookingSystem.Airport_Repository
 
                         if (isValid)
                         {
-                            Utilities.flights.Add(flight);
+                            flights.Add(flight);
                         }
                         else
                         {
                             foreach (var validationResult in results)
                             {
-                                Manager.errorMessages.Add($"Line {i + 1}: {validationResult.ErrorMessage}");
+                                Manager.errorMessages.Add($"Issue with flight {flight.FlightId}: {validationResult.ErrorMessage}");
                             }
                         }
                     }
-                    else
-                    {
-                        Manager.errorMessages.Add($"Line {i + 1}: Invalid line format: {line}");
-                    }
+
+                    Utilities.flights.AddRange(flights);
                 }
 
                 if (Manager.errorMessages.Any())

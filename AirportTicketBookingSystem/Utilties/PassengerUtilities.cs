@@ -108,7 +108,6 @@ namespace AirportTicketBookingSystem.Utilties
                 _ = int.TryParse(Console.ReadLine(), out int operation);
                 switch (operation)
                 {
-
                     case 0:
                         Console.WriteLine("Exiting"); return;
                     case (int) FlightFilter.ByDepartureCountry:

@@ -34,15 +34,15 @@ namespace AirportTicketBookingSystem.Models
         [Required(ErrorMessage = "Arrival Airport is required.")]
         public string ArrivalAirport { get; set; }
 
-        public Flight(int flightId, DateTime departureDate, string departureCountry,
-            string destinationCountry, string departureAirport, string arrivalAirport)
+        public Flight(int FlightId, DateTime DepartureDate, string DepartureCountry,
+            string DestinationCountry, string DepartureAirport, string ArrivalAirport)
         {
-            FlightId = flightId;
-            DepartureDate = departureDate;
-            DepartureCountry = departureCountry;
-            DestinationCountry = destinationCountry;
-            DepartureAirport = departureAirport;
-            ArrivalAirport = arrivalAirport;
+            this.FlightId = FlightId;
+            this.DepartureDate = DepartureDate;
+            this.DepartureCountry = DepartureCountry;
+            this.DestinationCountry = DestinationCountry;
+            this.DepartureAirport = DepartureAirport;
+            this.ArrivalAirport = ArrivalAirport;
         }
         public override string ToString()
         {
