@@ -193,6 +193,11 @@ namespace AirportTicketBookingSystem.Utilties
                             }
                             break;
                         case (int) ManageBooking.CancelBooking:
+                            if (!passenger.Bookings.Any())
+                            {
+                                Console.WriteLine("No bookings found");
+                                return;
+                            }
                             foreach (var booking in passenger.Bookings)
                             {
                                 Console.WriteLine(booking);
@@ -207,11 +212,17 @@ namespace AirportTicketBookingSystem.Utilties
                             }
                             else
                             {
+                                Manager.AllBookings!.Remove(selectedBooking);
                                 passenger.Bookings.Remove(selectedBooking);
                                 Console.WriteLine("Booking Cancelled");
                             }
                             break;
                         case (int) ManageBooking.ModifyBooking:
+                            if(!passenger.Bookings.Any())
+                            {
+                                Console.WriteLine("No bookings found");
+                                return;
+                            }
                             foreach (var booking in passenger.Bookings)
                             {
                                 Console.WriteLine(booking);
