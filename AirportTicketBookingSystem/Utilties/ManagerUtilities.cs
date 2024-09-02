@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.Airport_Repository;
+using AirportTicketBookingSystem.Enums;
 using AirportTicketBookingSystem.Models;
 
 namespace AirportTicketBookingSystem.Utilties
@@ -13,21 +14,22 @@ namespace AirportTicketBookingSystem.Utilties
                 try
                 {
                     Console.WriteLine("1-Filter Bookings\n2-Export to CSV\n3-Import from CSV\n4-View error messages from last import\n0-Go back");
-                    int op = Convert.ToInt32(Console.ReadLine());
+                    _ = int.TryParse(Console.ReadLine(), out int operation);
 
-                    switch (op)
+                    switch (operation)
                     {
-                        case 0: return;
-                        case 1:
+                        case 0:
+                            return;
+                        case (int) ManagerOption.FilterBookings:
                             FilterBookings();
                             break;
-                        case 2:
+                        case (int) ManagerOption.ExportBookingsToCsv:
                             _ = FlightsRepository.ExportToCsvAsync();
                             break;
-                        case 3:
+                        case (int) ManagerOption.ImportBookingsToCsv:
                             _ = Utilities.GenerateFlights();
                             break;
-                        case 4:
+                        case (int) ManagerOption.ViewErrorMessages:
                             foreach (var error in Manager.errorMessages)
                             {
                                 Console.WriteLine(error);
@@ -38,9 +40,9 @@ namespace AirportTicketBookingSystem.Utilties
                             break;
                     }
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(exception.Message);
                 }
             }
         }
@@ -51,15 +53,15 @@ namespace AirportTicketBookingSystem.Utilties
                 Console.WriteLine("Filter by\n1-Booking ID\n2-Flight ID\n3-Passenger ID\n4-Flight Information\n0-Exit");
                 try
                 {
-                    int op = Convert.ToInt32(Console.ReadLine());
-                    switch (op)
+                    _ = int.TryParse(Console.ReadLine(), out int operation);
+                    switch (operation)
                     {
                         case 0:
                             Console.WriteLine("Exiting");
                             return;
-                        case 1:
+                        case (int) BookingFilter.ByBookingId:
                             Console.WriteLine("Enter Booking ID");
-                            int bookingId = Convert.ToInt32(Console.ReadLine());
+                            _ = int.TryParse(Console.ReadLine(), out int bookingId);
                             Booking? booking = Manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
                             if (booking == null)
                             {
@@ -70,9 +72,9 @@ namespace AirportTicketBookingSystem.Utilties
                                 Console.WriteLine(booking);
                             }
                             break;
-                        case 2:
+                        case (int) BookingFilter.ByFlightId:
                             Console.WriteLine("Enter flight id");
-                            int flightId = Convert.ToInt32(Console.ReadLine());
+                            _ = int.TryParse(Console.ReadLine(), out int flightId);
                             List<Booking>? bookings = Manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
                             if (bookings.Count == 0)
                             {
@@ -86,9 +88,9 @@ namespace AirportTicketBookingSystem.Utilties
                                 }
                             }
                             break;
-                        case 3:
+                        case (int) BookingFilter.ByPassengerId:
                             Console.WriteLine("Enter passenger id");
-                            int passengerId = Convert.ToInt32(Console.ReadLine());
+                            _ = int.TryParse(Console.ReadLine(), out int passengerId);
                             List<Booking>? bookingsByPassenger = Manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
                             if (bookingsByPassenger.Count == 0)
                             {
@@ -102,15 +104,15 @@ namespace AirportTicketBookingSystem.Utilties
                                 }
                             }
                             break;
-                        case 4:
+                        case (int) BookingFilter.ByFlightInformation:
                             List<Flight>? flights = Manager.AllBookings!.Select(flights => flights.Flight).Distinct().ToList();
                             PassengerUtilities.CheckAvailableFlights(flights);
                             break;
                     }
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(exception.Message);
                 }
             }
         }

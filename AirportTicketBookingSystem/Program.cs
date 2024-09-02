@@ -8,6 +8,7 @@ namespace AirportTicketBookingSystem
     {
         static void Main(string[] args)
         {
+            _ = Utilties.Utilities.GenerateFlights();
             Utilties.Utilities.PrintMenu();
         }
 

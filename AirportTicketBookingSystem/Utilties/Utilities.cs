@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.Airport_Repository;
+using AirportTicketBookingSystem.Enums;
 using AirportTicketBookingSystem.Models;
 
 namespace AirportTicketBookingSystem.Utilties
@@ -8,34 +9,35 @@ namespace AirportTicketBookingSystem.Utilties
         public static List<Flight> flights = new List<Flight>();
         public static void PrintMenu()
         {
-            _ = GenerateFlights();
-            Console.Clear();
-
             while (true)
             {
                 try
                 {
                     Console.WriteLine("Welcome!\nYou Are?\n1-Manager\n2-Passenger\n3-Exit");
 
-                    int op = Convert.ToInt32(Console.ReadLine());
-                    switch (op)
+                    string input = Console.ReadLine();
+                    if (int.TryParse(input, out int operation))
                     {
-                        default:
-                            Console.WriteLine("Invalid Option"); PrintMenu();
-                            break;
-                        case 1:
-                            ManagerUtilities.PrintMenu();
-                            break;
-                        case 2:
-                            PassengerUtilities.PrintMenu();
-                            break;
-                        case 3:
-                            return;
+                        switch (operation)
+                        {
+                            default:
+                                Console.WriteLine("Invalid Option");
+                                PrintMenu();
+                                break;
+                            case (int)UserType.Manager:
+                                ManagerUtilities.PrintMenu();
+                                break;
+                            case (int)UserType.Passenger:
+                                PassengerUtilities.PrintMenu();
+                                break;
+                            case 3:
+                                return;
+                        }
                     }
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(exception.Message);
                 }
             }
         }
