@@ -63,20 +63,13 @@ namespace AirportTicketBookingSystem.Utilties
                             Console.WriteLine("Enter Booking ID");
                             _ = int.TryParse(Console.ReadLine(), out int bookingId);
                             Booking? booking = Manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
-                            if (booking == null)
-                            {
-                                Console.WriteLine("Booking not found");
-                            }
-                            else
-                            {
-                                Console.WriteLine(booking);
-                            }
+                            Console.WriteLine(booking == null ? "Booking not found" : booking);
                             break;
                         case (int) BookingFilter.ByFlightId:
                             Console.WriteLine("Enter flight id");
                             _ = int.TryParse(Console.ReadLine(), out int flightId);
                             List<Booking>? bookings = Manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
-                            if (bookings.Count == 0)
+                            if (!bookings.Any())
                             {
                                 Console.WriteLine("No bookings found");
                             }
@@ -92,7 +85,7 @@ namespace AirportTicketBookingSystem.Utilties
                             Console.WriteLine("Enter passenger id");
                             _ = int.TryParse(Console.ReadLine(), out int passengerId);
                             List<Booking>? bookingsByPassenger = Manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
-                            if (bookingsByPassenger.Count == 0)
+                            if (!bookingsByPassenger.Any())
                             {
                                 Console.WriteLine("No bookings found");
                             }
