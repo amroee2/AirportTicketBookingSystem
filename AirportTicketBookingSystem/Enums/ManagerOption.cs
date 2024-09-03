@@ -8,7 +8,8 @@ namespace AirportTicketBookingSystem.Enums
 {
     public enum ManagerOption
     {
-        FilterBookings=1,
+        Exit,
+        FilterBookings,
         ExportBookingsToCsv,
         ImportBookingsToCsv,
         ViewErrorMessages,

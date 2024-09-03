@@ -8,7 +8,8 @@ namespace AirportTicketBookingSystem.Enums
 {
     public enum BookingFilter
     {
-        ByBookingId = 1,
+        Exit,
+        ByBookingId,
         ByFlightId,
         ByPassengerId,
         ByFlightInformation

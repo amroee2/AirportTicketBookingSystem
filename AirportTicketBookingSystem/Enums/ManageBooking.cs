@@ -8,7 +8,8 @@ namespace AirportTicketBookingSystem.Enums
 {
     public enum ManageBooking
     {
-        ViewPersonalBooking=1,
+        Exit,
+        ViewPersonalBooking,
         CancelBooking,
         ModifyBooking
     }

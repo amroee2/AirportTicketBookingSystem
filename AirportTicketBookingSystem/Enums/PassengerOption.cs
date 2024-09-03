@@ -8,9 +8,10 @@ namespace AirportTicketBookingSystem.Enums
 {
     public enum PassengerOption
     {
-        BookFlight =1,
-        CheckAvailableFlights = 2,
-        ManageFlight = 3,
+        Exit,
+        BookFlight,
+        CheckAvailableFlights ,
+        ManageFlight,
         CheckFlightConstraints
     }
 }

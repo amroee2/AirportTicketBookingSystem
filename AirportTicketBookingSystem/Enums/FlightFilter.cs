@@ -8,7 +8,8 @@ namespace AirportTicketBookingSystem.Enums
 {
     public enum FlightFilter
     {
-        ByDepartureCountry = 1,
+        Exit,
+        ByDepartureCountry,
         ByDestinationCountry,
         ByDepartureDate,
         ByDepartureAirport,

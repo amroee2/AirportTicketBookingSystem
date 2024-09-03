@@ -33,27 +33,29 @@ namespace AirportTicketBookingSystem.Utilties
                 try
                 {
                     Console.WriteLine("1-Book a Flight\n2-Check Available flights\n3-Manage flights\n4-Check flight constraints\n0-Exit");
-                    _ = int.TryParse(Console.ReadLine(), out int operation);
-                    switch (operation)
+                    if (Enum.TryParse(Console.ReadLine(), out PassengerOption operation))
                     {
-                        case 0:
-                            Console.WriteLine("Exiting");
-                            return;
-                        case (int) PassengerOption.BookFlight:
-                            BookFlight(passenger);
-                            break;
-                        case (int) PassengerOption.CheckAvailableFlights:
-                            CheckAvailableFlights(Utilities.flights);
-                            break;
-                        case (int) PassengerOption.ManageFlight:
-                            ManageBookings(passenger);
-                            break;
-                        case (int) PassengerOption.CheckFlightConstraints:
-                            CheckFlightConstraints();
-                            break;
-                        default:
-                            Console.WriteLine("Invalid Option");
-                            break;
+                        switch (operation)
+                        {
+                            case PassengerOption.Exit:
+                                Console.WriteLine("Exiting");
+                                return;
+                            case PassengerOption.BookFlight:
+                                BookFlight(passenger);
+                                break;
+                            case PassengerOption.CheckAvailableFlights:
+                                CheckAvailableFlights(Utilities.flights);
+                                break;
+                            case PassengerOption.ManageFlight:
+                                ManageBookings(passenger);
+                                break;
+                            case PassengerOption.CheckFlightConstraints:
+                                CheckFlightConstraints();
+                                break;
+                            default:
+                                Console.WriteLine("Invalid Option");
+                                break;
+                        }
                     }
                 }
                 catch (Exception exception)
@@ -105,66 +107,68 @@ namespace AirportTicketBookingSystem.Utilties
                 "\n4-Departure airport\n5-Arrival airport\n6-All\n0-Exit");
             try
             {
-                _ = int.TryParse(Console.ReadLine(), out int operation);
-                switch (operation)
+                if (Enum.TryParse(Console.ReadLine(), out FlightFilter operation))
                 {
-                    case 0:
-                        Console.WriteLine("Exiting"); return;
-                    case (int) FlightFilter.ByDepartureCountry:
-                        Console.WriteLine("Enter the departure country");
-                        string departureCountry = Console.ReadLine();
-                        var flights = FlightsList.Where(f => f.DepartureCountry == departureCountry).ToList();
-                        foreach (var flight in flights)
-                        {
-                            Console.WriteLine(flight);
-                        }
-                        break;
-                    case (int) FlightFilter.ByDestinationCountry:
-                        Console.WriteLine("Enter the destination country");
-                        string destinationCountry = Console.ReadLine();
-                        flights = FlightsList.Where(f => f.DestinationCountry == destinationCountry).ToList();
-                        foreach (var flight in flights)
-                        {
-                            Console.WriteLine(flight);
-                        }
-                        break;
-                    case (int) FlightFilter.ByDepartureDate:
-                        Console.WriteLine("Enter the departure date");
-                        string departureDate = Console.ReadLine();
-                        DateTime date = DateTime.Parse(departureDate);
-                        flights = FlightsList.Where(f => f.DepartureDate == date).ToList();
-                        foreach (var flight in flights)
-                        {
-                            Console.WriteLine(flight);
-                        }
-                        break;
-                    case (int) FlightFilter.ByDepartureAirport:
-                        Console.WriteLine("Enter the departure airport");
-                        string departureAirport = Console.ReadLine();
-                        flights = FlightsList.Where(f => f.DepartureAirport == departureAirport).ToList();
-                        foreach (var flight in flights)
-                        {
-                            Console.WriteLine(flight);
-                        }
-                        break;
-                    case (int) FlightFilter.ByArrivalAirport:
-                        Console.WriteLine("Enter the arrival airport");
-                        string arrivalAirport = Console.ReadLine();
-                        flights = FlightsList.Where(f => f.ArrivalAirport == arrivalAirport).ToList();
-                        foreach (var flight in flights)
-                        {
-                            Console.WriteLine(flight);
-                        }
-                        break;
-                    case (int) FlightFilter.NoFilter:
-                        foreach (var flight in FlightsList)
-                        {
-                            Console.WriteLine(flight);
-                        }
-                        break;
-                    default:
-                        Console.WriteLine("Invalid Option");
-                        break;
+                    switch (operation)
+                    {
+                        case FlightFilter.Exit:
+                            Console.WriteLine("Exiting"); return;
+                        case FlightFilter.ByDepartureCountry:
+                            Console.WriteLine("Enter the departure country");
+                            string departureCountry = Console.ReadLine();
+                            var flights = FlightsList.Where(f => f.DepartureCountry == departureCountry).ToList();
+                            foreach (var flight in flights)
+                            {
+                                Console.WriteLine(flight);
+                            }
+                            break;
+                        case FlightFilter.ByDestinationCountry:
+                            Console.WriteLine("Enter the destination country");
+                            string destinationCountry = Console.ReadLine();
+                            flights = FlightsList.Where(f => f.DestinationCountry == destinationCountry).ToList();
+                            foreach (var flight in flights)
+                            {
+                                Console.WriteLine(flight);
+                            }
+                            break;
+                        case FlightFilter.ByDepartureDate:
+                            Console.WriteLine("Enter the departure date");
+                            string departureDate = Console.ReadLine();
+                            DateTime date = DateTime.Parse(departureDate);
+                            flights = FlightsList.Where(f => f.DepartureDate == date).ToList();
+                            foreach (var flight in flights)
+                            {
+                                Console.WriteLine(flight);
+                            }
+                            break;
+                        case FlightFilter.ByDepartureAirport:
+                            Console.WriteLine("Enter the departure airport");
+                            string departureAirport = Console.ReadLine();
+                            flights = FlightsList.Where(f => f.DepartureAirport == departureAirport).ToList();
+                            foreach (var flight in flights)
+                            {
+                                Console.WriteLine(flight);
+                            }
+                            break;
+                        case FlightFilter.ByArrivalAirport:
+                            Console.WriteLine("Enter the arrival airport");
+                            string arrivalAirport = Console.ReadLine();
+                            flights = FlightsList.Where(f => f.ArrivalAirport == arrivalAirport).ToList();
+                            foreach (var flight in flights)
+                            {
+                                Console.WriteLine(flight);
+                            }
+                            break;
+                        case FlightFilter.NoFilter:
+                            foreach (var flight in FlightsList)
+                            {
+                                Console.WriteLine(flight);
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Invalid Option");
+                            break;
+                    }
                 }
             }
             catch (Exception exception)
@@ -180,72 +184,74 @@ namespace AirportTicketBookingSystem.Utilties
                 Console.WriteLine("Manage bookings\n1-View personal bookings\n2-Cancel a booking\n3-Modify a booking\n0-Go Back");
                 try
                 {
-                    _ = int.TryParse(Console.ReadLine(), out int operation);
-                    switch (operation)
+                    if (Enum.TryParse(Console.ReadLine(), out ManageBooking operation))
                     {
-                        case 0:
-                            Console.WriteLine("Exiting");
-                            return;
-                        case (int) ManageBooking.ViewPersonalBooking:
-                            foreach (var booking in passenger.Bookings)
-                            {
-                                Console.WriteLine(booking);
-                            }
-                            break;
-                        case (int) ManageBooking.CancelBooking:
-                            if (!passenger.Bookings.Any())
-                            {
-                                Console.WriteLine("No bookings found");
+                        switch (operation)
+                        {
+                            case ManageBooking.Exit:
+                                Console.WriteLine("Exiting");
                                 return;
-                            }
-                            foreach (var booking in passenger.Bookings)
-                            {
-                                Console.WriteLine(booking);
-                            }
-                            Console.WriteLine("Enter the booking ID you want to cancel");
-                            _ = int.TryParse(Console.ReadLine(), out int bookingId);
-                            Booking? selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
-                            if (selectedBooking == null)
-                            {
-                                Console.WriteLine("Invalid Booking ID");
-                                return;
-                            }
-                            else
-                            {
-                                Manager.AllBookings!.Remove(selectedBooking);
-                                passenger.Bookings.Remove(selectedBooking);
-                                Console.WriteLine("Booking Cancelled");
-                            }
-                            break;
-                        case (int) ManageBooking.ModifyBooking:
-                            if(!passenger.Bookings.Any())
-                            {
-                                Console.WriteLine("No bookings found");
-                                return;
-                            }
-                            foreach (var booking in passenger.Bookings)
-                            {
-                                Console.WriteLine(booking);
-                            }
-                            Console.WriteLine("Enter the booking ID you want to modify");
-                            _ = int.TryParse(Console.ReadLine(), out bookingId);
-                            selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
-                            if (selectedBooking == null)
-                            {
-                                Console.WriteLine("Invalid Booking ID");
-                                return;
-                            }
-                            else
-                            {
-                                Console.WriteLine("1-Economy\n2-Business\n3-First Class");
-                                _ = int.TryParse(Console.ReadLine(), out int classType);
-                                selectedBooking.ClassType = (ClassType)classType;
-                                Console.WriteLine("Booking Modified");
-                            }
-                            break;
-                        default:
-                            Console.WriteLine("Invalid Option");
-                            break;
+                            case ManageBooking.ViewPersonalBooking:
+                                foreach (var booking in passenger.Bookings)
+                                {
+                                    Console.WriteLine(booking);
+                                }
+                                break;
+                            case ManageBooking.CancelBooking:
+                                if (!passenger.Bookings.Any())
+                                {
+                                    Console.WriteLine("No bookings found");
+                                    return;
+                                }
+                                foreach (var booking in passenger.Bookings)
+                                {
+                                    Console.WriteLine(booking);
+                                }
+                                Console.WriteLine("Enter the booking ID you want to cancel");
+                                _ = int.TryParse(Console.ReadLine(), out int bookingId);
+                                Booking? selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+                                if (selectedBooking == null)
+                                {
+                                    Console.WriteLine("Invalid Booking ID");
+                                    return;
+                                }
+                                else
+                                {
+                                    Manager.AllBookings!.Remove(selectedBooking);
+                                    passenger.Bookings.Remove(selectedBooking);
+                                    Console.WriteLine("Booking Cancelled");
+                                }
+                                break;
+                            case ManageBooking.ModifyBooking:
+                                if (!passenger.Bookings.Any())
+                                {
+                                    Console.WriteLine("No bookings found");
+                                    return;
+                                }
+                                foreach (var booking in passenger.Bookings)
+                                {
+                                    Console.WriteLine(booking);
+                                }
+                                Console.WriteLine("Enter the booking ID you want to modify");
+                                _ = int.TryParse(Console.ReadLine(), out bookingId);
+                                selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+                                if (selectedBooking == null)
+                                {
+                                    Console.WriteLine("Invalid Booking ID");
+                                    return;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("1-Economy\n2-Business\n3-First Class");
+                                    _ = int.TryParse(Console.ReadLine(), out int classType);
+                                    selectedBooking.ClassType = (ClassType)classType;
+                                    Console.WriteLine("Booking Modified");
+                                }
+                                break;
+                            default:
+                                Console.WriteLine("Invalid Option");
+                                break;
+                        }
                     }
                 }
                 catch (Exception e)

@@ -14,9 +14,8 @@ namespace AirportTicketBookingSystem.Utilties
                 try
                 {
                     Console.WriteLine("Welcome!\nYou Are?\n1-Manager\n2-Passenger\n3-Exit");
-
                     string input = Console.ReadLine();
-                    if (int.TryParse(input, out int operation))
+                    if (Enum.TryParse(input, out UserType operation))
                     {
                         switch (operation)
                         {
@@ -24,13 +23,13 @@ namespace AirportTicketBookingSystem.Utilties
                                 Console.WriteLine("Invalid Option");
                                 PrintMenu();
                                 break;
-                            case (int)UserType.Manager:
+                            case UserType.Manager:
                                 ManagerUtilities.PrintMenu();
                                 break;
-                            case (int)UserType.Passenger:
+                            case UserType.Passenger:
                                 PassengerUtilities.PrintMenu();
                                 break;
-                            case 3:
+                            case UserType.Exit:
                                 return;
                         }
                     }
@@ -41,7 +40,7 @@ namespace AirportTicketBookingSystem.Utilties
                 }
             }
         }
-        public async static Task GenerateFlights()
+        public async static Task GenerateFlightsAsync()
         {
             await FlightsRepository.ImportFromCsvAsync();
         }
