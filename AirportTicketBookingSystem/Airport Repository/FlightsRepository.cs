@@ -49,8 +49,6 @@ namespace AirportTicketBookingSystem.Airport_Repository
                 using (var reader = new StreamReader(filePath))
                 using (var csv = new CsvReader(reader, config))
                 {
-                    var flights = new List<Flight>();
-
                     while (await csv.ReadAsync())
                     {
                         var flight = csv.GetRecord<Flight>();
@@ -62,7 +60,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
 
                         if (isValid)
                         {
-                            flights.Add(flight);
+                            Utilities.flights.Add(flight);
                         }
                         else
                         {
@@ -72,8 +70,6 @@ namespace AirportTicketBookingSystem.Airport_Repository
                             }
                         }
                     }
-
-                    Utilities.flights.AddRange(flights);
                 }
 
                 if (Manager.errorMessages.Any())
