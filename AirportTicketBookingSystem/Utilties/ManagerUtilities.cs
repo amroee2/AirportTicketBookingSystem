@@ -24,7 +24,7 @@ namespace AirportTicketBookingSystem.Utilties
                                 FilterBookings();
                                 break;
                             case ManagerOption.ExportBookingsToCsv:
-                                _ = FlightsRepository.ExportToCsvAsync();
+                                _ = FlightExport.ExportToCsvAsync();
                                 break;
                             case ManagerOption.ImportBookingsToCsv:
                                 _ = Utilities.GenerateFlightsAsync();
