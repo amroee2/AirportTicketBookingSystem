@@ -4,9 +4,15 @@ using AirportTicketBookingSystem.Models;
 
 namespace AirportTicketBookingSystem.Utilties
 {
-    public class Utilities
+    public class GeneralUtility
     {
         public static List<IFlight> flights = new List<IFlight>();
+
+        public IFlightImport _flightImport { get; set; }
+        public GeneralUtility(IFlightImport flightImport)
+        {
+            _flightImport = flightImport;
+        }
         public static void PrintMenu()
         {
             while (true)
@@ -24,7 +30,8 @@ namespace AirportTicketBookingSystem.Utilties
                                 PrintMenu();
                                 break;
                             case UserType.Manager:
-                                ManagerUtilities.PrintMenu();
+                                ManagerUtilities managerUtilities = new ManagerUtilities(new FlightImport(new FlightValidator()), new FlightExport());
+                                managerUtilities.PrintMenu();
                                 break;
                             case UserType.Passenger:
                                 PassengerUtilities.PrintMenu();
@@ -40,11 +47,9 @@ namespace AirportTicketBookingSystem.Utilties
                 }
             }
         }
-        public async static Task GenerateFlightsAsync()
+        public async Task GenerateFlightsAsync()
         {
-            IFlightValidator flightValidator = new FlightValidator();
-            FlightImport flightImport = new FlightImport(flightValidator);
-            await flightImport.ImportFromCsvAsync();
+            await _flightImport.ImportFromCsvAsync();
         }
     }
 }

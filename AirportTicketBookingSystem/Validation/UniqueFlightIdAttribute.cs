@@ -12,7 +12,7 @@ namespace AirportTicketBookingSystem.Validation
         public override bool IsValid(object value)
         {
             int id = (int)value;
-            var flight = Utilties.Utilities.flights.Find(f => f.FlightId == id);
+            var flight = Utilties.GeneralUtility.flights.Find(f => f.FlightId == id);
             if (flight == null)
             {
                 return true;

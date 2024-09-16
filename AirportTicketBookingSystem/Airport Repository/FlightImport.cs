@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace AirportTicketBookingSystem.Airport_Repository
 {
-    public class FlightImport
+    public class FlightImport : IFlightImport
     {
         private readonly IFlightValidator _flightValidator;
 

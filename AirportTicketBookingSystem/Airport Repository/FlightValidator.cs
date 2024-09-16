@@ -15,7 +15,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
 
             if (isValid)
             {
-                Utilities.flights.Add(flight);
+                GeneralUtility.flights.Add(flight);
             }
             else
             {

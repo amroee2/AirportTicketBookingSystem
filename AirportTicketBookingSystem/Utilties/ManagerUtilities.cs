@@ -6,7 +6,15 @@ namespace AirportTicketBookingSystem.Utilties
 {
     public class ManagerUtilities
     {
-        public static void PrintMenu()
+        public IFlightImport _flightImport;
+        public IFlightExport _flightExport;
+
+        public ManagerUtilities(IFlightImport flightImport, IFlightExport flightExport)
+        {
+            _flightImport = flightImport;
+            _flightExport = flightExport;
+        }
+        public void PrintMenu()
         {
             Console.WriteLine("Welcome Manager!");
             while (true)
@@ -24,10 +32,11 @@ namespace AirportTicketBookingSystem.Utilties
                                 FilterBookings();
                                 break;
                             case ManagerOption.ExportBookingsToCsv:
-                                _ = FlightExport.ExportToCsvAsync();
+                                _= _flightExport.ExportToCSVAsync();
                                 break;
                             case ManagerOption.ImportBookingsToCsv:
-                                _ = Utilities.GenerateFlightsAsync();
+                                GeneralUtility generalUtility = new GeneralUtility(_flightImport);
+                                _ = generalUtility.GenerateFlightsAsync();
                                 break;
                             case ManagerOption.ViewErrorMessages:
                                 foreach (var error in Manager.errorMessages)
@@ -64,13 +73,13 @@ namespace AirportTicketBookingSystem.Utilties
                             case BookingFilter.ByBookingId:
                                 Console.WriteLine("Enter Booking ID");
                                 _ = int.TryParse(Console.ReadLine(), out int bookingId);
-                                Booking? booking = Manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
+                                IBooking? booking = Manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
                                 Console.WriteLine(booking == null ? "Booking not found" : booking);
                                 break;
                             case BookingFilter.ByFlightId:
                                 Console.WriteLine("Enter flight id");
                                 _ = int.TryParse(Console.ReadLine(), out int flightId);
-                                List<Booking>? bookings = Manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
+                                List<IBooking>? bookings = Manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
                                 if (!bookings.Any())
                                 {
                                     Console.WriteLine("No bookings found");
@@ -86,7 +95,7 @@ namespace AirportTicketBookingSystem.Utilties
                             case BookingFilter.ByPassengerId:
                                 Console.WriteLine("Enter passenger id");
                                 _ = int.TryParse(Console.ReadLine(), out int passengerId);
-                                List<Booking>? bookingsByPassenger = Manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
+                                List<IBooking>? bookingsByPassenger = Manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
                                 if (!bookingsByPassenger.Any())
                                 {
                                     Console.WriteLine("No bookings found");

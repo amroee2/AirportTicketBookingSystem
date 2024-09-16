@@ -44,7 +44,7 @@ namespace AirportTicketBookingSystem.Utilties
                                 BookFlight(passenger);
                                 break;
                             case PassengerOption.CheckAvailableFlights:
-                                CheckAvailableFlights(Utilities.flights);
+                                CheckAvailableFlights(GeneralUtility.flights);
                                 break;
                             case PassengerOption.ManageFlight:
                                 ManageBookings(passenger);
@@ -69,7 +69,7 @@ namespace AirportTicketBookingSystem.Utilties
             CheckAvailableFlightsByDate(DateTime.Now);
             Console.WriteLine("Enter the flight ID you want to book");
             _ = int.TryParse(Console.ReadLine(), out int flightId);
-            IFlight? selectedFlight = Utilities.flights.FirstOrDefault(f => f.FlightId == flightId);
+            IFlight? selectedFlight = GeneralUtility.flights.FirstOrDefault(f => f.FlightId == flightId);
             var existingBooking = passenger.Bookings.FirstOrDefault(b => b.Flight.FlightId == flightId);
             if (existingBooking != null)
             {
@@ -95,7 +95,7 @@ namespace AirportTicketBookingSystem.Utilties
         }
         public static void CheckAvailableFlightsByDate(DateTime time)
         {
-            var availableFlights = Utilities.flights.Where(f => f.DepartureDate > time).ToList();
+            var availableFlights = GeneralUtility.flights.Where(f => f.DepartureDate > time).ToList();
             foreach (var flight in availableFlights)
             {
                 Console.WriteLine(flight);
