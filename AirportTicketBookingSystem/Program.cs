@@ -10,10 +10,10 @@ namespace AirportTicketBookingSystem
     {
         static void Main(string[] args)
         {
-            IFlightValidator flightValidator = new FlightValidator();
+            IFlightValidator flightValidator = new FlightValidator(new ErrorLogger());
             IFlightImport flightImport = new FlightImport(flightValidator);
             GeneralUtility utilities = new GeneralUtility(flightImport);
-            _ = utilities.GenerateFlightsAsync();
+            _ = flightImport.ImportFromCsvAsync();
             Utilties.GeneralUtility.PrintMenu();
         }
 

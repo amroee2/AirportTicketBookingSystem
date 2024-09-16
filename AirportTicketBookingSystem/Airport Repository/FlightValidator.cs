@@ -6,6 +6,12 @@ namespace AirportTicketBookingSystem.Airport_Repository
 {
     public class FlightValidator : IFlightValidator
     {
+        public IErrorLogger _errorLogger { get; set; }
+
+        public FlightValidator(IErrorLogger errorLogger)
+        {
+            _errorLogger = errorLogger;
+        }
         public void ValidateFlight(IFlight flight)
         {
             var context = new ValidationContext(flight, serviceProvider: null, items: null);
@@ -21,21 +27,21 @@ namespace AirportTicketBookingSystem.Airport_Repository
             {
                 foreach (var validationResult in results)
                 {
-                    Manager.errorMessages.Add($"Issue with flight {flight.FlightId}: {validationResult.ErrorMessage}");
+                    _errorLogger.ErrorMessages.Add($"Issue with flight {flight.FlightId}: {validationResult.ErrorMessage}");
                 }
             }
         }
 
         public void PrintValidationResults()
         {
-            if (!Manager.errorMessages.Any())
+            if (!_errorLogger.ErrorMessages.Any())
             {
                 Console.WriteLine("Flights imported successfully from flights.csv");
             }
             else
             {
                 Console.WriteLine("The following errors were found:");
-                foreach (var errorMessage in Manager.errorMessages)
+                foreach (var errorMessage in _errorLogger.ErrorMessages)
                 {
                     Console.WriteLine(errorMessage);
                 }

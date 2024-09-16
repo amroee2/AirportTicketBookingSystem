@@ -1,125 +1,58 @@
-﻿using AirportTicketBookingSystem.Airport_Repository;
-using AirportTicketBookingSystem.Enums;
-using AirportTicketBookingSystem.Models;
+﻿using AirportTicketBookingSystem.Enums;
+using AirportTicketBookingSystem.Utilties;
 
-namespace AirportTicketBookingSystem.Utilties
+public class ManagerUtilities
 {
-    public class ManagerUtilities
-    {
-        public IFlightImport _flightImport;
-        public IFlightExport _flightExport;
+    private readonly FileManager _fileManager;
+    private readonly BookingManager _bookingManager;
 
-        public ManagerUtilities(IFlightImport flightImport, IFlightExport flightExport)
+    public ManagerUtilities(FileManager fileManager, BookingManager bookingManager)
+    {
+        _fileManager = fileManager;
+        _bookingManager = bookingManager;
+    }
+
+    public void PrintMenu()
+    {
+        Console.WriteLine("Welcome Manager!");
+        while (true)
         {
-            _flightImport = flightImport;
-            _flightExport = flightExport;
-        }
-        public void PrintMenu()
-        {
-            Console.WriteLine("Welcome Manager!");
-            while (true)
+            try
             {
-                try
+                Console.WriteLine("1-Filter Bookings\n2-Export to CSV\n3-Import from CSV\n4-View error messages from last import\n0-Go back");
+                if (Enum.TryParse(Console.ReadLine(), out ManagerOption operation))
                 {
-                    Console.WriteLine("1-Filter Bookings\n2-Export to CSV\n3-Import from CSV\n4-View error messages from last import\n0-Go back");
-                    if (Enum.TryParse(Console.ReadLine(), out ManagerOption operation))
-                    {
-                        switch (operation)
-                        {
-                            case ManagerOption.Exit:
-                                return;
-                            case ManagerOption.FilterBookings:
-                                FilterBookings();
-                                break;
-                            case ManagerOption.ExportBookingsToCsv:
-                                _= _flightExport.ExportToCSVAsync();
-                                break;
-                            case ManagerOption.ImportBookingsToCsv:
-                                GeneralUtility generalUtility = new GeneralUtility(_flightImport);
-                                _ = generalUtility.GenerateFlightsAsync();
-                                break;
-                            case ManagerOption.ViewErrorMessages:
-                                foreach (var error in Manager.errorMessages)
-                                {
-                                    Console.WriteLine(error);
-                                }
-                                break;
-                            default:
-                                Console.WriteLine("Invalid Option");
-                                break;
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.Message);
+                    HandleManagerRequest(operation);
                 }
             }
-        }
-        public static void FilterBookings()
-        {
-            while (true)
+            catch (Exception exception)
             {
-                Console.WriteLine("Filter by\n1-Booking ID\n2-Flight ID\n3-Passenger ID\n4-Flight Information\n0-Exit");
-                try
-                {
-                    if (Enum.TryParse(Console.ReadLine(), out BookingFilter operation))
-                    {
-                        switch (operation)
-                        {
-                            case BookingFilter.Exit:
-                                Console.WriteLine("Exiting");
-                                return;
-                            case BookingFilter.ByBookingId:
-                                Console.WriteLine("Enter Booking ID");
-                                _ = int.TryParse(Console.ReadLine(), out int bookingId);
-                                IBooking? booking = Manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
-                                Console.WriteLine(booking == null ? "Booking not found" : booking);
-                                break;
-                            case BookingFilter.ByFlightId:
-                                Console.WriteLine("Enter flight id");
-                                _ = int.TryParse(Console.ReadLine(), out int flightId);
-                                List<IBooking>? bookings = Manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
-                                if (!bookings.Any())
-                                {
-                                    Console.WriteLine("No bookings found");
-                                }
-                                else
-                                {
-                                    foreach (var book in bookings)
-                                    {
-                                        Console.WriteLine(book);
-                                    }
-                                }
-                                break;
-                            case BookingFilter.ByPassengerId:
-                                Console.WriteLine("Enter passenger id");
-                                _ = int.TryParse(Console.ReadLine(), out int passengerId);
-                                List<IBooking>? bookingsByPassenger = Manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
-                                if (!bookingsByPassenger.Any())
-                                {
-                                    Console.WriteLine("No bookings found");
-                                }
-                                else
-                                {
-                                    foreach (var book in bookingsByPassenger)
-                                    {
-                                        Console.WriteLine(book);
-                                    }
-                                }
-                                break;
-                            case BookingFilter.ByFlightInformation:
-                                List<IFlight>? flights = Manager.AllBookings!.Select(flights => flights.Flight).Distinct().ToList();
-                                PassengerUtilities.CheckAvailableFlights(flights);
-                                break;
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.Message);
-                }
+                Console.WriteLine(exception.Message);
             }
+        }
+    }
+
+    private void HandleManagerRequest(ManagerOption operation)
+    {
+        switch (operation)
+        {
+            case ManagerOption.Exit:
+                return;
+            case ManagerOption.FilterBookings:
+                _bookingManager.FilterBookings();
+                break;
+            case ManagerOption.ExportBookingsToCsv:
+                _fileManager.ExportToCsvAsync();
+                break;
+            case ManagerOption.ImportBookingsToCsv:
+                _fileManager.ImportFromCsvAsync();
+                break;
+            case ManagerOption.ViewErrorMessages:
+                _bookingManager.ViewErrorMessages();
+                break;
+            default:
+                Console.WriteLine("Invalid Option");
+                break;
         }
     }
 }
