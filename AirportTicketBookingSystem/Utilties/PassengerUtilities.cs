@@ -13,7 +13,7 @@ namespace AirportTicketBookingSystem.Utilties
             Console.WriteLine("ID");
             string input = Console.ReadLine();
             _ = int.TryParse(input, out int id);
-            Passenger passenger = CheckPassenger(id);
+            IPassenger passenger = CheckPassenger(id);
             if(passenger is not null)
             {
                 Console.WriteLine("Welcome back!");
@@ -64,7 +64,7 @@ namespace AirportTicketBookingSystem.Utilties
                 }
             }
         }
-        public static void BookFlight(Passenger passenger)
+        public static void BookFlight(IPassenger passenger)
         {
             CheckAvailableFlightsByDate(DateTime.Now);
             Console.WriteLine("Enter the flight ID you want to book");
@@ -85,7 +85,7 @@ namespace AirportTicketBookingSystem.Utilties
             {
                 Console.WriteLine("1-Economy\n2-Business\n3-First Class");
                 _ = int.TryParse(Console.ReadLine(), out int classType);
-                Booking booking = new Booking(incrementBookingId, $"{passenger.FirstName} {passenger.LastName}", passenger.PassengerId, selectedFlight, (ClassType)classType);
+                IBooking booking = new Booking(incrementBookingId, $"{passenger.FirstName} {passenger.LastName}", passenger.PassengerId, selectedFlight, (ClassType)classType);
                 incrementBookingId++;
                 passenger.Bookings.Add(booking);
                 Manager.AllBookings!.Add(booking);
@@ -176,7 +176,7 @@ namespace AirportTicketBookingSystem.Utilties
                 Console.WriteLine(exception.Message);
             }
         }
-        public static void ManageBookings(Passenger passenger)
+        public static void ManageBookings(IPassenger passenger)
         {
 
             while (true)
@@ -209,7 +209,7 @@ namespace AirportTicketBookingSystem.Utilties
                                 }
                                 Console.WriteLine("Enter the booking ID you want to cancel");
                                 _ = int.TryParse(Console.ReadLine(), out int bookingId);
-                                Booking? selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+                                IBooking? selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
                                 if (selectedBooking == null)
                                 {
                                     Console.WriteLine("Invalid Booking ID");
@@ -260,7 +260,7 @@ namespace AirportTicketBookingSystem.Utilties
                 }
             }
         }
-        public static Passenger CheckPassenger(int passengerId)
+        public static IPassenger CheckPassenger(int passengerId)
         {
             var passenger = Manager.AllPassengers!.FirstOrDefault(p => p.PassengerId == passengerId);
             return passenger;

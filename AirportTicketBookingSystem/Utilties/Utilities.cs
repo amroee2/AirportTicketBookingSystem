@@ -42,8 +42,9 @@ namespace AirportTicketBookingSystem.Utilties
         }
         public async static Task GenerateFlightsAsync()
         {
-            await FlightImport.ImportFromCsvAsync();
+            IFlightValidator flightValidator = new FlightValidator();
+            FlightImport flightImport = new FlightImport(flightValidator);
+            await flightImport.ImportFromCsvAsync();
         }
     }
-
 }

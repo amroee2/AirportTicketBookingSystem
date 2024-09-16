@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AirportTicketBookingSystem.Airport_Repository
 {
-    public class FlightValidator
+    public class FlightValidator : IFlightValidator
     {
-        public static void ValidateFlight(Flight flight)
+        public void ValidateFlight(IFlight flight)
         {
             var context = new ValidationContext(flight, serviceProvider: null, items: null);
             var results = new List<ValidationResult>();
@@ -26,7 +26,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
             }
         }
 
-        public static void PrintValidationResults()
+        public void PrintValidationResults()
         {
             if (!Manager.errorMessages.Any())
             {

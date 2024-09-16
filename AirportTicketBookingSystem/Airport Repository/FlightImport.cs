@@ -1,21 +1,26 @@
 ﻿using AirportTicketBookingSystem.Models;
-using AirportTicketBookingSystem.Utilties;
 using CsvHelper;
 using CsvHelper.Configuration;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace AirportTicketBookingSystem.Airport_Repository
 {
     public class FlightImport
     {
-        public async static Task ImportFromCsvAsync()
+        private readonly IFlightValidator _flightValidator;
+
+        public FlightImport(IFlightValidator flightValidator)
+        {
+            _flightValidator = flightValidator;
+        }
+
+        public async Task ImportFromCsvAsync()
         {
             try
             {
                 string baseDirectory = AppContext.BaseDirectory;
-
                 string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
+
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture);
                 using (var reader = new StreamReader(filePath))
                 using (var csv = new CsvReader(reader, config))
@@ -23,16 +28,16 @@ namespace AirportTicketBookingSystem.Airport_Repository
                     while (await csv.ReadAsync())
                     {
                         var flight = csv.GetRecord<Flight>();
-                        FlightValidator.ValidateFlight(flight);
+                        _flightValidator.ValidateFlight(flight);
                     }
-                    FlightValidator.PrintValidationResults();
+                    _flightValidator.PrintValidationResults();
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"An error occurred while reading the file: {e.Message}");
             }
-
         }
     }
+
 }
