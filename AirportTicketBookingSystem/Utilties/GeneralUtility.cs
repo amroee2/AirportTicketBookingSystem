@@ -30,11 +30,15 @@ namespace AirportTicketBookingSystem.Utilties
                                 PrintMenu();
                                 break;
                             case UserType.Manager:
-                                ManagerUtilities managerUtilities = new ManagerUtilities(new FlightImport(new FlightValidator()), new FlightExport());
+                                var errorLogger = new ErrorLogger();
+                                FileManager fileManager = new FileManager(new FlightImport(new FlightValidator(errorLogger)), new FlightExport());
+                                BookingManager bookingManager = new BookingManager(new BookingChecker(new Manager()), errorLogger);
+                                ManagerUtilities managerUtilities = new ManagerUtilities(fileManager, bookingManager);
                                 managerUtilities.PrintMenu();
                                 break;
                             case UserType.Passenger:
-                                PassengerUtilities.PrintMenu();
+                                PassengerUtilities passengerUtilities = new PassengerUtilities();
+                                passengerUtilities.PrintMenu();
                                 break;
                             case UserType.Exit:
                                 return;
@@ -46,10 +50,6 @@ namespace AirportTicketBookingSystem.Utilties
                     Console.WriteLine(exception.Message);
                 }
             }
-        }
-        public async Task GenerateFlightsAsync()
-        {
-            await _flightImport.ImportFromCsvAsync();
         }
     }
 }

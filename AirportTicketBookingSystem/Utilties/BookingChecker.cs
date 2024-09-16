@@ -15,9 +15,14 @@ namespace AirportTicketBookingSystem.Utilties
             while (true)
             {
                 Console.WriteLine("Filter by\n1-Booking ID\n2-Flight ID\n3-Passenger ID\n4-Flight Information\n0-Exit");
+                string input = Console.ReadLine();
+                if (input == "0")
+                {
+                    return;
+                }
                 try
                 {
-                    CheckFilterType();
+                    CheckFilterType(input);
                 }
                 catch (Exception exception)
                 {
@@ -26,9 +31,9 @@ namespace AirportTicketBookingSystem.Utilties
             }
         }
 
-        private void CheckFilterType()
+        private void CheckFilterType(string input)
         {
-            if (!Enum.TryParse(Console.ReadLine(), out BookingFilter operation))
+            if (!Enum.TryParse(input, out BookingFilter operation))
             {
                 return;
             }
