@@ -1,6 +1,6 @@
 ﻿namespace AirportTicketBookingSystem.Models
 {
-    public class Booking : IBooking
+    public interface IBooking
     {
         public int BookingId { get; set; }
         public string? PassengerName { get; set; }
@@ -22,19 +22,6 @@
                 }
                 return 0;
             }
-        }
-
-        public Booking(int bookingId, string passengerName, int passengerId, IFlight flight, ClassType classType)
-        {
-            BookingId = bookingId;
-            PassengerName = passengerName;
-            PassengerId = passengerId;
-            Flight = flight;
-            ClassType = classType;
-        }
-        public override string ToString()
-        {
-            return $"Booking ID: {BookingId}, Passenger: {PassengerName} (ID: {PassengerId}), Flight: {Flight?.ToString() ?? "N/A"}, Class: {ClassType}, Price: {Price}";
         }
     }
 }

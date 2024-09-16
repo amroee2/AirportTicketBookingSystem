@@ -1,7 +1,4 @@
-﻿using AirportTicketBookingSystem.Validation;
-using System.ComponentModel.DataAnnotations;
-
-namespace AirportTicketBookingSystem.Models
+﻿namespace AirportTicketBookingSystem.Models
 {
     public interface IFlight
     {

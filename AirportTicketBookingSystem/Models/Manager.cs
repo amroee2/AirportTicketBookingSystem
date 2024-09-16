@@ -8,8 +8,8 @@ namespace AirportTicketBookingSystem.Models
 {
     public class Manager
     {
-        public static List<Booking>? AllBookings { get; set; } = new List<Booking>();
-        public static List<Passenger>? AllPassengers { get; set; } = new List<Passenger>();
+        public static List<IBooking>? AllBookings { get; set; } = new List<IBooking>();
+        public static List<IPassenger>? AllPassengers { get; set; } = new List<IPassenger>();
 
         public static List<string> errorMessages = new List<string>();
 
