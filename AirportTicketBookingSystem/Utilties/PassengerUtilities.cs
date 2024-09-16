@@ -69,7 +69,7 @@ namespace AirportTicketBookingSystem.Utilties
             CheckAvailableFlightsByDate(DateTime.Now);
             Console.WriteLine("Enter the flight ID you want to book");
             _ = int.TryParse(Console.ReadLine(), out int flightId);
-            Flight? selectedFlight = Utilities.flights.FirstOrDefault(f => f.FlightId == flightId);
+            IFlight? selectedFlight = Utilities.flights.FirstOrDefault(f => f.FlightId == flightId);
             var existingBooking = passenger.Bookings.FirstOrDefault(b => b.Flight.FlightId == flightId);
             if (existingBooking != null)
             {
@@ -101,7 +101,7 @@ namespace AirportTicketBookingSystem.Utilties
                 Console.WriteLine(flight);
             }
         }
-        public static void CheckAvailableFlights(List<Flight> FlightsList)
+        public static void CheckAvailableFlights(List<IFlight> FlightsList)
         {
             Console.WriteLine("Search by\n1-Departure country\n2-Destination country\n3-Departure date" +
                 "\n4-Departure airport\n5-Arrival airport\n6-All\n0-Exit");

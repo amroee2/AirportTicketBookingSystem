@@ -100,7 +100,7 @@ namespace AirportTicketBookingSystem.Utilties
                                 }
                                 break;
                             case BookingFilter.ByFlightInformation:
-                                List<Flight>? flights = Manager.AllBookings!.Select(flights => flights.Flight).Distinct().ToList();
+                                List<IFlight>? flights = Manager.AllBookings!.Select(flights => flights.Flight).Distinct().ToList();
                                 PassengerUtilities.CheckAvailableFlights(flights);
                                 break;
                         }

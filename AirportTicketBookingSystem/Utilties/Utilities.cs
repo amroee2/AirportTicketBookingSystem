@@ -6,7 +6,7 @@ namespace AirportTicketBookingSystem.Utilties
 {
     public class Utilities
     {
-        public static List<Flight> flights = new List<Flight>();
+        public static List<IFlight> flights = new List<IFlight>();
         public static void PrintMenu()
         {
             while (true)

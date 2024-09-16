@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Models
 {
-    public class Flight
+    public class Flight : IFlight
     {
         [Required(ErrorMessage = "FlightId is required.")]
         [UniqueFlightId(ErrorMessage = "Flight id must be unique")]
