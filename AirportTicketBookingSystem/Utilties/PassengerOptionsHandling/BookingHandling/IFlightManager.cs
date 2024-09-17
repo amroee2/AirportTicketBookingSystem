@@ -4,6 +4,9 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
 {
     public interface IFlightManager
     {
-        void ManageBookings(IPassenger passenger);
+        public void ManageBookings(IPassenger passenger);
+        public void CancelPersonalBooking(IPassenger passenger, int bookingId);
+        public void ModifyPersonalBooking(IPassenger passenger, int bookingId, ClassType classType);
+
     }
 }
