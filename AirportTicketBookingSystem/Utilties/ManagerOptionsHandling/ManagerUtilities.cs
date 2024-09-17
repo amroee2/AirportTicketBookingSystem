@@ -7,7 +7,7 @@ public class ManagerUtilities
     private readonly IFileManager _fileManager;
     private readonly IBookingManager _bookingManager;
 
-    public ManagerUtilities(FileManager fileManager, BookingManager bookingManager)
+    public ManagerUtilities(IFileManager fileManager, IBookingManager bookingManager)
     {
         _fileManager = fileManager;
         _bookingManager = bookingManager;

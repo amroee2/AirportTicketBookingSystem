@@ -1,12 +1,5 @@
-﻿using AirportTicketBookingSystem.Airport_Repository;
-using AirportTicketBookingSystem.Enums;
+﻿using AirportTicketBookingSystem.Enums;
 using AirportTicketBookingSystem.Models;
-using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHandling;
-using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.ErrorHandling;
-using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.FileHandling;
-using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.AccountHandling;
-using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHandling;
-using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHandling;
 using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling;
 
 namespace AirportTicketBookingSystem.Utilties
@@ -15,12 +8,15 @@ namespace AirportTicketBookingSystem.Utilties
     {
         public static List<IFlight> flights = new List<IFlight>();
 
-        public IFlightImport _flightImport { get; set; }
-        public GeneralUtility(IFlightImport flightImport)
+        private readonly ManagerUtilities _managerUtilities;
+        private readonly PassengerUtilities _passengerUtilities;
+        public GeneralUtility(ManagerUtilities managerUtilities, PassengerUtilities passengerUtilities)
         {
-            _flightImport = flightImport;
+            _managerUtilities = managerUtilities;
+            _passengerUtilities = passengerUtilities;
         }
-        public static void PrintMenu()
+
+        public void PrintMenu()
         {
             while (true)
             {
@@ -32,31 +28,17 @@ namespace AirportTicketBookingSystem.Utilties
                     {
                         switch (operation)
                         {
-                            default:
-                                Console.WriteLine("Invalid Option");
-                                PrintMenu();
-                                break;
                             case UserType.Manager:
-                                var errorLogger = new ErrorLogger();
-                                FileManager fileManager = new FileManager(new FlightImport(new FlightValidator(errorLogger)), new FlightExport());
-                                BookingManager bookingManager = new BookingManager(new BookingChecker(new Manager()), errorLogger);
-                                ManagerUtilities managerUtilities = new ManagerUtilities(fileManager, bookingManager);
-                                managerUtilities.PrintMenu();
+                                _managerUtilities.PrintMenu();
                                 break;
                             case UserType.Passenger:
-                                Manager manager = new Manager();
-                                PassengerAccount passengerAccountManager = new PassengerAccount(manager);
-                                FlightChecker flightChecker = new FlightChecker();
-                                FlightConstraints flightConstraints = new FlightConstraints();
-                                PassengerFlightManager passengerFlightManager = new PassengerFlightManager(manager);
-                                PassengerFlightBooker passengerFlightBooker = new PassengerFlightBooker(manager, flightChecker);
-                                BookingHandler bookingHandler = new BookingHandler(passengerFlightBooker, passengerFlightManager);
-                                FlightHandler flightHandler = new FlightHandler(flightChecker, flightConstraints);
-                                PassengerUtilities passengerUtilities = new PassengerUtilities(passengerAccountManager, bookingHandler, flightHandler);
-                                passengerUtilities.PrintMenu();
+                                _passengerUtilities.PrintMenu();
                                 break;
                             case UserType.Exit:
                                 return;
+                            default:
+                                Console.WriteLine("Invalid Option");
+                                break;
                         }
                     }
                 }
