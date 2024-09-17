@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AirportTicketBookingSystem.Airport_Repository;
 using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Utilties;
+using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.ErrorHandling;
 
 namespace AirportTicketBookingSystem
 {
@@ -14,7 +15,7 @@ namespace AirportTicketBookingSystem
             IFlightImport flightImport = new FlightImport(flightValidator);
             GeneralUtility utilities = new GeneralUtility(flightImport);
             _ = flightImport.ImportFromCsvAsync();
-            Utilties.GeneralUtility.PrintMenu();
+            GeneralUtility.PrintMenu();
         }
 
        
