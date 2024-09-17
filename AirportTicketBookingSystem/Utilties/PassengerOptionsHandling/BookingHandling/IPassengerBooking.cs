@@ -4,6 +4,7 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
 {
     public interface IPassengerBooking
     {
-        void BookFlight(IPassenger passenger);
+        public void CollectFlightBookingDetails(IPassenger passenger);
+        public void BookFlight(IPassenger passenger, int flightId, ClassType classType);
     }
 }

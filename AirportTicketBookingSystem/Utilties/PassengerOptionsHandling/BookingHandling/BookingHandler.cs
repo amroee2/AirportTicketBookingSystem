@@ -17,7 +17,7 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.FileHandlin
 
         public void BookFlight(IPassenger passenger)
         {
-            _passengerBooking.BookFlight(passenger);
+            _passengerBooking.CollectFlightBookingDetails(passenger);
         }
         public void ManageBookings(IPassenger passenger)
         {
