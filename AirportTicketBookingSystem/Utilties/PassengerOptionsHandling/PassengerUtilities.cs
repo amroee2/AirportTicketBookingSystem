@@ -28,7 +28,13 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling
                 {
                     Console.WriteLine("1-Book a Flight\n2-Check Available flights\n3-Manage flights\n4-Check flight constraints\n0-Exit");
                     if (Enum.TryParse(Console.ReadLine(), out PassengerOption operation))
+                    {
+                        if (operation == PassengerOption.Exit)
+                        {
+                            break;
+                        }
                         HandlePassengerRequest(passenger, operation);
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -40,9 +46,6 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling
         {
             switch (operation)
             {
-                case PassengerOption.Exit:
-                    Console.WriteLine("Exiting");
-                    return;
                 case PassengerOption.BookFlight:
                     _passengerBooking.BookFlight(passenger);
                     break;

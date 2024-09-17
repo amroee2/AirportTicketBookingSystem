@@ -21,6 +21,10 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
                 {
                     if (Enum.TryParse(Console.ReadLine(), out ManageBooking operation))
                     {
+                        if(operation == ManageBooking.Exit)
+                        {
+                            break;
+                        }
                         CheckManagingOption(passenger, operation);
                     }
                 }
@@ -35,9 +39,6 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
         {
             switch (operation)
             {
-                case ManageBooking.Exit:
-                    Console.WriteLine("Exiting");
-                    return;
                 case ManageBooking.ViewPersonalBooking:
                     ViewPersonalBookings(passenger);
                     break;
