@@ -21,7 +21,7 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling
 
         public void PrintMenu()
         {
-            IPassenger passenger = _account.LogIn();
+            IPassenger passenger = _account.RequestLogInDetails();
             while (true)
             {
                 try
