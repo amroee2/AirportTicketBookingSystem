@@ -1,6 +1,13 @@
 ﻿using AirportTicketBookingSystem.Airport_Repository;
 using AirportTicketBookingSystem.Enums;
 using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHandling;
+using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.ErrorHandling;
+using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.FileHandling;
+using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.AccountHandling;
+using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHandling;
+using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHandling;
+using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling;
 
 namespace AirportTicketBookingSystem.Utilties
 {
@@ -37,7 +44,15 @@ namespace AirportTicketBookingSystem.Utilties
                                 managerUtilities.PrintMenu();
                                 break;
                             case UserType.Passenger:
-                                PassengerUtilities passengerUtilities = new PassengerUtilities();
+                                Manager manager = new Manager();
+                                PassengerAccount passengerAccountManager = new PassengerAccount(manager);
+                                FlightChecker flightChecker = new FlightChecker();
+                                FlightConstraints flightConstraints = new FlightConstraints();
+                                PassengerFlightManager passengerFlightManager = new PassengerFlightManager(manager);
+                                PassengerFlightBooker passengerFlightBooker = new PassengerFlightBooker(manager, flightChecker);
+                                BookingHandler bookingHandler = new BookingHandler(passengerFlightBooker, passengerFlightManager);
+                                FlightHandler flightHandler = new FlightHandler(flightChecker, flightConstraints);
+                                PassengerUtilities passengerUtilities = new PassengerUtilities(passengerAccountManager, bookingHandler, flightHandler);
                                 passengerUtilities.PrintMenu();
                                 break;
                             case UserType.Exit:
