@@ -22,24 +22,35 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHa
 
         private void CheckFilterType(List<IFlight> FlightsList, FlightFilter operation)
         {
+            List<IFlight> filteredFlights = new List<IFlight>();
             switch (operation)
             {
                 case FlightFilter.Exit:
                     Console.WriteLine("Exiting"); return;
                 case FlightFilter.ByDepartureCountry:
-                    FilterByDepartureCountry(FlightsList);
+                    Console.WriteLine("Enter the departure country");
+                    string departureCountry = Console.ReadLine();
+                    filteredFlights= FilterByDepartureCountry(FlightsList, departureCountry);
                     break;
                 case FlightFilter.ByDestinationCountry:
-                    FilterByDestinationCountry(FlightsList);
+                    Console.WriteLine("Enter the destination country");
+                    string destinationCountry = Console.ReadLine();
+                    filteredFlights= FilterByDestinationCountry(FlightsList, destinationCountry);
                     break;
                 case FlightFilter.ByDepartureDate:
-                    FilterByDepartureDate(FlightsList);
+                    Console.WriteLine("Enter the departure date");
+                    string departureDate = Console.ReadLine();
+                    filteredFlights = FilterByDepartureDate(FlightsList, departureDate);
                     break;
                 case FlightFilter.ByDepartureAirport:
-                    FilterByDepartureAirport(FlightsList);
+                    Console.WriteLine("Enter the departure airport");
+                    string departureAirport = Console.ReadLine();
+                    filteredFlights = FilterByDepartureAirport(FlightsList, departureAirport);
                     break;
                 case FlightFilter.ByArrivalAirport:
-                    FilterByArrivalAirport(FlightsList);
+                    Console.WriteLine("Enter the arrival airport");
+                    string arrivalAirport = Console.ReadLine();
+                    filteredFlights = FilterByArrivalAirport(FlightsList, arrivalAirport);
                     break;
                 case FlightFilter.NoFilter:
                     PrintAllFlights(FlightsList);
@@ -48,6 +59,7 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHa
                     Console.WriteLine("Invalid Option");
                     break;
             }
+            PrintAllFlights(filteredFlights);
         }
 
         public void PrintAllFlights(List<IFlight> FlightsList)
@@ -58,64 +70,35 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHa
             }
         }
 
-        private void FilterByArrivalAirport(List<IFlight> FlightsList)
+        public List<IFlight> FilterByArrivalAirport(List<IFlight> FlightsList, string arrivalAirport)
         {
-            List<IFlight> flights;
-            Console.WriteLine("Enter the arrival airport");
-            string arrivalAirport = Console.ReadLine();
-            flights = FlightsList.Where(f => f.ArrivalAirport == arrivalAirport).ToList();
-            foreach (var flight in flights)
-            {
-                Console.WriteLine(flight);
-            }
+            var flights = FlightsList.Where(f => f.ArrivalAirport == arrivalAirport).ToList();
+            return flights;
         }
 
-        private void FilterByDepartureAirport(List<IFlight> FlightsList)
+        public List<IFlight> FilterByDepartureAirport(List<IFlight> FlightsList, string departureAirport)
         {
-            List<IFlight> flights;
-            Console.WriteLine("Enter the departure airport");
-            string departureAirport = Console.ReadLine();
-            flights = FlightsList.Where(f => f.DepartureAirport == departureAirport).ToList();
-            foreach (var flight in flights)
-            {
-                Console.WriteLine(flight);
-            }
+            var flights = FlightsList.Where(f => f.DepartureAirport == departureAirport).ToList();
+            return flights;
         }
 
-        private void FilterByDepartureDate(List<IFlight> FlightsList)
+        public List<IFlight> FilterByDepartureDate(List<IFlight> FlightsList, string departureDate)
         {
-            List<IFlight> flights;
-            Console.WriteLine("Enter the departure date");
-            string departureDate = Console.ReadLine();
             DateTime date = DateTime.Parse(departureDate);
-            flights = FlightsList.Where(f => f.DepartureDate == date).ToList();
-            foreach (var flight in flights)
-            {
-                Console.WriteLine(flight);
-            }
+            var flights = FlightsList.Where(f => f.DepartureDate == date).ToList();
+            return flights;
         }
 
-        private void FilterByDestinationCountry(List<IFlight> FlightsList)
+        public List<IFlight> FilterByDestinationCountry(List<IFlight> FlightsList, string destinationCountry)
         {
-            List<IFlight> flights;
-            Console.WriteLine("Enter the destination country");
-            string destinationCountry = Console.ReadLine();
-            flights = FlightsList.Where(f => f.DestinationCountry == destinationCountry).ToList();
-            foreach (var flight in flights)
-            {
-                Console.WriteLine(flight);
-            }
+            var flights = FlightsList.Where(f => f.DestinationCountry == destinationCountry).ToList();
+            return flights;
         }
 
-        private void FilterByDepartureCountry(List<IFlight> FlightsList)
+        public List<IFlight> FilterByDepartureCountry(List<IFlight> FlightsList, string departureCountry)
         {
-            Console.WriteLine("Enter the departure country");
-            string departureCountry = Console.ReadLine();
             var flights = FlightsList.Where(f => f.DepartureCountry == departureCountry).ToList();
-            foreach (var flight in flights)
-            {
-                Console.WriteLine(flight);
-            }
+            return flights;
         }
     }
 }
