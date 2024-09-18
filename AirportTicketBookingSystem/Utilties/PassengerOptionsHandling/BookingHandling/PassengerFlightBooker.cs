@@ -33,12 +33,12 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
                 return;
             }
 
-            BookFlight(passenger, flightId, (ClassType)classType);
+            BookFlight(passenger, flightId, (ClassType)classType, GeneralUtility.flights);
         }
 
-        public void BookFlight(IPassenger passenger, int flightId, ClassType classType)
+        public void BookFlight(IPassenger passenger, int flightId, ClassType classType, List<IFlight> AllFlights)
         {
-            IFlight? selectedFlight = GeneralUtility.flights.FirstOrDefault(f => f.FlightId == flightId);
+            IFlight? selectedFlight = AllFlights.FirstOrDefault(f => f.FlightId == flightId);
 
             var existingBooking = passenger.Bookings.FirstOrDefault(b => b.Flight.FlightId == flightId);
             if (existingBooking != null)

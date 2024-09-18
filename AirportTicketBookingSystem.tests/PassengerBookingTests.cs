@@ -6,12 +6,16 @@ using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHandli
 using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHandling;
 using AutoFixture;
 using AutoFixture.AutoMoq;
+using CsvHelper.Configuration;
+using CsvHelper;
 using Moq;
+using System.Globalization;
 
 namespace AirportTicketBookingSystem.tests
 {
     public class PassengerBookingTests
     {
+        List<IFlight> AllFlights = new List<IFlight>();
         Mock<IManager> mockManager;
         Mock<IFlightFilter> mockFlightFilter;
         IFixture fixture;
@@ -19,16 +23,38 @@ namespace AirportTicketBookingSystem.tests
 
         public PassengerBookingTests()
         {
-            GeneralUtility.flights.Clear();
+            ImportFromCsvAsync().Wait();
             mockManager = new Mock<IManager>();
             mockFlightFilter = new Mock<IFlightFilter>();
-            FlightImport flightImport = new FlightImport(new FlightValidator(new ErrorLogger()));
-            flightImport.ImportFromCsvAsync().Wait();
 
             fixture = new Fixture().Customize(new AutoMoqCustomization { ConfigureMembers = true });
             passenger = fixture.Create<Passenger>();
             passenger.Bookings!.Clear();
             mockManager.Setup(m => m.AllBookings).Returns(new List<IBooking>());
+        }
+
+        private async Task ImportFromCsvAsync()
+        {
+            try
+            {
+                string baseDirectory = AppContext.BaseDirectory;
+                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
+
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+                using (var reader = new StreamReader(filePath))
+                using (var csv = new CsvReader(reader, config))
+                {
+                    while (await csv.ReadAsync())
+                    {
+                        var flight = csv.GetRecord<Flight>();
+                        AllFlights.Add(flight);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred while reading the file: {e.Message}");
+            }
         }
 
         [Fact]
@@ -39,12 +65,12 @@ namespace AirportTicketBookingSystem.tests
 
             mockFlightFilter.Setup(f => f.PrintAllFlights(It.IsAny<List<IFlight>>()));
 
-            passengerBooking.BookFlight(passenger, 1, randomClassType);
+            passengerBooking.BookFlight(passenger, 1, randomClassType, AllFlights);
 
             var bookedFlight = passenger.Bookings!.First();
             Assert.Single(passenger.Bookings);
-            Assert.Equal(1, bookedFlight.Flight.FlightId); // Ensure the correct flight is booked
-            Assert.Equal(randomClassType, bookedFlight.ClassType); // Ensure the correct class type is booked
+            Assert.Equal(1, bookedFlight.Flight.FlightId);
+            Assert.Equal(randomClassType, bookedFlight.ClassType);
         }
 
         [Fact]
@@ -55,8 +81,8 @@ namespace AirportTicketBookingSystem.tests
 
             mockFlightFilter.Setup(f => f.PrintAllFlights(It.IsAny<List<IFlight>>()));
 
-            passengerBooking.BookFlight(passenger, 1, randomClassType);
-            passengerBooking.BookFlight(passenger, 1, randomClassType);
+            passengerBooking.BookFlight(passenger, 1, randomClassType, AllFlights);
+            passengerBooking.BookFlight(passenger, 1, randomClassType, AllFlights);
 
             Assert.Single(passenger.Bookings!);
             Assert.Equal(1, passenger.Bookings.First().Flight.FlightId); // Verifying the correct flight is booked

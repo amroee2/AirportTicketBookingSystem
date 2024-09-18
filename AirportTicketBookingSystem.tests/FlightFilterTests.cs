@@ -1,17 +1,16 @@
-﻿using System.Linq;
-using AutoFixture;
-using AirportTicketBookingSystem.Airport_Repository;
-using AirportTicketBookingSystem.Models;
-using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.ErrorHandling;
+﻿using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHandling;
-using AirportTicketBookingSystem.Utilties;
+using AutoFixture;
+using CsvHelper;
+using CsvHelper.Configuration;
+using System.Globalization;
 
 namespace AirportTicketBookingSystem.tests
 {
     public class FlightFilterTests
     {
         List<IFlight> flightsList;
-        List<IFlight> AllFlights = GeneralUtility.flights;
+        List<IFlight> AllFlights = new List<IFlight>();
         FlightChecker flightChecker;
         private readonly List<string> DepartureCountries;
         private readonly List<string> DepartureAirports;
@@ -22,17 +21,40 @@ namespace AirportTicketBookingSystem.tests
 
         public FlightFilterTests()
         {
-            FlightImport flightImport = new FlightImport(new FlightValidator(new ErrorLogger()));
-            flightImport.ImportFromCsvAsync().Wait();
+            ImportFromCsvAsync().Wait();
             flightChecker = new FlightChecker();
             flightsList = new List<IFlight>();
             fixture = new Fixture();
-
             DepartureCountries = AllFlights.Select(flight => flight.DepartureCountry).Distinct().ToList();
             DepartureAirports = AllFlights.Select(flight => flight.DepartureAirport).Distinct().ToList();
             DestinationCountries = AllFlights.Select(flight => flight.DestinationCountry).Distinct().ToList();
             DestinationAirports = AllFlights.Select(flight => flight.ArrivalAirport).Distinct().ToList();
         }
+
+        private async Task ImportFromCsvAsync()
+        {
+            try
+            {
+                string baseDirectory = AppContext.BaseDirectory;
+                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
+
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+                using (var reader = new StreamReader(filePath))
+                using (var csv = new CsvReader(reader, config))
+                {
+                    while (await csv.ReadAsync())
+                    {
+                        var flight = csv.GetRecord<Flight>();
+                        AllFlights.Add(flight);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred while reading the file: {e.Message}");
+            }
+        }
+
 
         private string GetRandomItemFromList(List<string> list)
         {
