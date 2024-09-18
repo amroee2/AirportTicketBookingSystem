@@ -11,6 +11,7 @@ namespace AirportTicketBookingSystem.tests
     public class FlightFilterTests
     {
         List<IFlight> flightsList;
+        List<IFlight> AllFlights = GeneralUtility.flights;
         FlightChecker flightChecker;
         private readonly List<string> DepartureCountries;
         private readonly List<string> DepartureAirports;
@@ -27,10 +28,10 @@ namespace AirportTicketBookingSystem.tests
             flightsList = new List<IFlight>();
             fixture = new Fixture();
 
-            DepartureCountries = GeneralUtility.flights.Select(flight => flight.DepartureCountry).Distinct().ToList();
-            DepartureAirports = GeneralUtility.flights.Select(flight => flight.DepartureAirport).Distinct().ToList();
-            DestinationCountries = GeneralUtility.flights.Select(flight => flight.DestinationCountry).Distinct().ToList();
-            DestinationAirports = GeneralUtility.flights.Select(flight => flight.ArrivalAirport).Distinct().ToList();
+            DepartureCountries = AllFlights.Select(flight => flight.DepartureCountry).Distinct().ToList();
+            DepartureAirports = AllFlights.Select(flight => flight.DepartureAirport).Distinct().ToList();
+            DestinationCountries = AllFlights.Select(flight => flight.DestinationCountry).Distinct().ToList();
+            DestinationAirports = AllFlights.Select(flight => flight.ArrivalAirport).Distinct().ToList();
         }
 
         private string GetRandomItemFromList(List<string> list)
@@ -42,7 +43,7 @@ namespace AirportTicketBookingSystem.tests
         public void ShouldFilterFlightByDepartureAirport()
         {
             string randomAirport = GetRandomItemFromList(DepartureAirports);
-            flightsList = flightChecker.FilterByDepartureAirport(GeneralUtility.flights, randomAirport);
+            flightsList = flightChecker.FilterByDepartureAirport(AllFlights, randomAirport);
             Assert.True(flightsList.All(flight => flight.DepartureAirport == randomAirport));
         }
 
@@ -50,7 +51,7 @@ namespace AirportTicketBookingSystem.tests
         public void ShouldFilterFlightByArrivalAirport()
         {
             string randomAirport = GetRandomItemFromList(DestinationAirports);
-            flightsList = flightChecker.FilterByArrivalAirport(GeneralUtility.flights, randomAirport);
+            flightsList = flightChecker.FilterByArrivalAirport(AllFlights, randomAirport);
             Assert.True(flightsList.All(flight => flight.ArrivalAirport == randomAirport));
         }
 
@@ -58,7 +59,7 @@ namespace AirportTicketBookingSystem.tests
         public void ShouldFilterFlightByDepartureDate()
         {
             DateTime targetDate = DateTime.Parse("9/5/2024");
-            flightsList = flightChecker.FilterByDepartureDate(GeneralUtility.flights, "9/5/2024");
+            flightsList = flightChecker.FilterByDepartureDate(AllFlights, "9/5/2024");
             Assert.True(flightsList.All(flight => flight.DepartureDate == targetDate));
         }
 
@@ -66,7 +67,7 @@ namespace AirportTicketBookingSystem.tests
         public void ShouldFilterFlightByDepartureCountry()
         {
             string randomCountry = GetRandomItemFromList(DepartureCountries);
-            flightsList = flightChecker.FilterByDepartureCountry(GeneralUtility.flights, randomCountry);
+            flightsList = flightChecker.FilterByDepartureCountry(AllFlights, randomCountry);
             Assert.True(flightsList.All(flight => flight.DepartureCountry == randomCountry));
         }
 
@@ -74,7 +75,7 @@ namespace AirportTicketBookingSystem.tests
         public void ShouldFilterFlightByDestinationCountry()
         {
             string randomCountry = GetRandomItemFromList(DestinationCountries);
-            flightsList = flightChecker.FilterByDestinationCountry(GeneralUtility.flights, randomCountry);
+            flightsList = flightChecker.FilterByDestinationCountry(AllFlights, randomCountry);
             Assert.True(flightsList.All(flight => flight.DestinationCountry == randomCountry));
         }
     }

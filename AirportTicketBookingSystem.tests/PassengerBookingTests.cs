@@ -1,5 +1,6 @@
 ﻿using AirportTicketBookingSystem.Airport_Repository;
 using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Utilties;
 using AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.ErrorHandling;
 using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHandling;
 using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHandling;
@@ -18,6 +19,7 @@ namespace AirportTicketBookingSystem.tests
 
         public PassengerBookingTests()
         {
+            GeneralUtility.flights.Clear();
             mockManager = new Mock<IManager>();
             mockFlightFilter = new Mock<IFlightFilter>();
             FlightImport flightImport = new FlightImport(new FlightValidator(new ErrorLogger()));

@@ -18,14 +18,16 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHand
             while (true)
             {
                 Console.WriteLine("Filter by\n1-Booking ID\n2-Flight ID\n3-Passenger ID\n4-Flight Information\n0-Exit");
-                string input = Console.ReadLine();
-                if (input == "0")
+                if (Enum.TryParse(Console.ReadLine(), out BookingFilter operation))
                 {
-                    return;
+                    if (operation == BookingFilter.Exit)
+                    {
+                        break;
+                    }
                 }
                 try
                 {
-                    CheckFilterType(input);
+                    CheckFilterType(operation);
                 }
                 catch (Exception exception)
                 {
@@ -34,22 +36,28 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHand
             }
         }
 
-        private void CheckFilterType(string input)
+        private void CheckFilterType(BookingFilter operation)
         {
-            if (!Enum.TryParse(input, out BookingFilter operation))
-            {
-                return;
-            }
+            List<IBooking> bookings = new List<IBooking>();
             switch (operation)
             {
                 case BookingFilter.ByBookingId:
-                    FilterByBookingId();
+                    Console.WriteLine("Enter Booking ID");
+                    _ = int.TryParse(Console.ReadLine(), out int bookingId);
+                    bookings = FilterByBookingId(bookingId);
+                    PrintBookings(bookings);
                     break;
                 case BookingFilter.ByFlightId:
-                    FilterByFlightId();
+                    Console.WriteLine("Enter flight id");
+                    _ = int.TryParse(Console.ReadLine(), out int flightId);
+                    bookings = FilterByFlightId(flightId);
+                    PrintBookings(bookings);
                     break;
                 case BookingFilter.ByPassengerId:
-                    FilterByPassengerId();
+                    Console.WriteLine("Enter passenger id");
+                    _ = int.TryParse(Console.ReadLine(), out int passengerId);
+                    bookings = FilterByPassengerId(passengerId);
+                    PrintBookings(bookings);
                     break;
                 case BookingFilter.ByFlightInformation:
                     List<IFlight>? flights = _manager.AllBookings!.Select(flights => flights.Flight).Distinct().ToList();
@@ -57,49 +65,42 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHand
                     break;
             }
         }
-
-        private void FilterByPassengerId()
+        private void PrintBookings(List<IBooking> bookings)
         {
-            Console.WriteLine("Enter passenger id");
-            _ = int.TryParse(Console.ReadLine(), out int passengerId);
-            List<IBooking>? bookingsByPassenger = _manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
-            if (!bookingsByPassenger.Any())
-            {
-                Console.WriteLine("No bookings found");
-            }
-            else
-            {
-                foreach (var book in bookingsByPassenger)
-                {
-                    Console.WriteLine(book);
-                }
-            }
-        }
-
-        private void FilterByFlightId()
-        {
-            Console.WriteLine("Enter flight id");
-            _ = int.TryParse(Console.ReadLine(), out int flightId);
-            List<IBooking>? bookings = _manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
             if (!bookings.Any())
             {
                 Console.WriteLine("No bookings found");
+                return;
             }
-            else
+
+            foreach (var booking in bookings)
             {
-                foreach (var book in bookings)
-                {
-                    Console.WriteLine(book);
-                }
+                Console.WriteLine(booking);
             }
         }
 
-        private void FilterByBookingId()
+        public List<IBooking> FilterByPassengerId(int passengerId)
         {
-            Console.WriteLine("Enter Booking ID");
-            _ = int.TryParse(Console.ReadLine(), out int bookingId);
-            IBooking? booking = _manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
-            Console.WriteLine(booking == null ? "Booking not found" : booking);
+            List<IBooking>? bookings = _manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
+            return bookings;
         }
+
+        public List<IBooking> FilterByFlightId(int flightId)
+        {
+            List<IBooking>? bookings = _manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
+
+            return bookings;
+        }
+
+        public List<IBooking> FilterByBookingId(int bookingId)
+        {
+            IBooking? booking = _manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
+            if (booking == null)
+            {
+                return new List<IBooking>();
+            }
+            return new List<IBooking> { booking };
+        }
+
     }
 }
