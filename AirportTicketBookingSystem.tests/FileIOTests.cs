@@ -10,14 +10,14 @@ namespace AirportTicketBookingSystem.tests
 {
     public class FileIOTests
     {
+        Mock<IErrorLogger> logger = new Mock<IErrorLogger>();
         public FileIOTests()
         {
+            logger.Setup(x => x.ErrorMessages).Returns(new List<string>());
         }
         [Fact]
         public void ShouldValidateFlight()
         {
-            Mock<IErrorLogger> logger = new Mock<IErrorLogger>();
-            logger.Setup(x => x.ErrorMessages).Returns(new List<string>());
             FlightValidator flightValidator = new FlightValidator(logger.Object);
             IFixture fixture = new Fixture().Customize(new AutoMoqCustomization());
             var flight = fixture.Build<Flight>()
@@ -31,8 +31,6 @@ namespace AirportTicketBookingSystem.tests
         [Fact]
         public void ShouldNotValidateFlight()
         {
-            Mock<IErrorLogger> logger = new Mock<IErrorLogger>();
-            logger.Setup(x => x.ErrorMessages).Returns(new List<string>());
             FlightValidator flightValidator = new FlightValidator(logger.Object);
             IFixture fixture = new Fixture().Customize(new AutoMoqCustomization());
             var flight = fixture.Build<Flight>()
@@ -50,16 +48,30 @@ namespace AirportTicketBookingSystem.tests
         [Fact]
         public async Task ShouldImportAllValidFlights()
         {
-            var mockErrorLogger = new Mock<IErrorLogger>();
-            mockErrorLogger.Setup(x => x.ErrorMessages).Returns(new List<string>());
-
             var mockFlightValidator = new Mock<IFlightValidator>();
-            var flightImport = new FlightImport(new FlightValidator(mockErrorLogger.Object));
 
+            mockFlightValidator.Setup(v => v.ValidateFlight(It.IsAny<IFlight>()))
+                               .Callback<IFlight>(flight =>
+                               {
+                                   if (GeneralUtility.flights.Any(f => f.FlightId == flight.FlightId)
+                                   || flight.DepartureDate < DateTime.Now)
+                                   {
+                                       logger.Object.ErrorMessages.Add($"Issue with flight {flight.FlightId}: Invalid data");
+                                   }
+                                   else
+                                   {
+                                       GeneralUtility.flights.Add(flight);
+                                   }
+                               });
+            mockFlightValidator.Setup(v => v.PrintValidationResults());
+            var flightImport = new FlightImport(mockFlightValidator.Object);
             await flightImport.ImportFromCsvAsync();
-
             Assert.Equal(18, GeneralUtility.flights.Count);
-            Assert.Equal(2, mockErrorLogger.Object.ErrorMessages.Count);
+            Assert.Equal(2, logger.Object.ErrorMessages.Count);
+            mockFlightValidator.Verify(v => v.ValidateFlight(It.IsAny<IFlight>()), Times.Exactly(20)); // Assuming 18 flights
+            mockFlightValidator.Verify(v => v.PrintValidationResults(), Times.Once);
+
         }
+
     }
 }
