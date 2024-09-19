@@ -6,7 +6,7 @@ using AutoFixture.AutoMoq;
 using Moq;
 using Xunit;
 
-namespace AirportTicketBookingSystem.Tests
+namespace AirportTicketBookingSystem.tests
 {
     public class BookingCheckerTests
     {
