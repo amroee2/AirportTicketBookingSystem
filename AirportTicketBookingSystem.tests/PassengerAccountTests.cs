@@ -15,27 +15,33 @@ namespace AirportTicketBookingSystem.tests
         }
 
         [Fact]
-        public void ShouldCreateNewPassenger()
+        public void LogIn_ShouldCreateNewPassenger()
         {
+            //Arrange
             var mockPassengerAccount = new Mock<IAccount>() { CallBase = true };
             mockPassengerAccount.Setup(x => x.CheckPassenger(It.IsAny<int>())).Returns((IPassenger)null);
             PassengerAccount passengerAccount = new PassengerAccount(mockManager.Object);
 
+            //Act
             IPassenger passenger = passengerAccount.LogIn(1, "Amro", "Qadadha");
 
+            //Assert
             Assert.Contains(passenger, mockManager.Object.AllPassengers!);
         }
 
         [Fact]
-        public void ShouldReturnExistingPassenger()
+        public void LogIn_ShouldReturnExistingPassenger()
         {
+            //Arrange
             var mockPassenger = new Passenger("Amro", "Qadadha", 1);
             var mockPassengerAccount = new Mock<IAccount>() { CallBase = true };
             mockPassengerAccount.Setup(x => x.CheckPassenger(It.IsAny<int>())).Returns(mockPassenger);
             PassengerAccount passengerAccount = new PassengerAccount(mockManager.Object);
 
+            //Act
             IPassenger passenger = passengerAccount.LogIn(1, "Amro", "Qadadha");
 
+            //Assert
             Assert.Equal("Amro", passenger.FirstName);
             Assert.Equal("Qadadha", passenger.LastName);
             Assert.Equal(1, passenger.PassengerId);

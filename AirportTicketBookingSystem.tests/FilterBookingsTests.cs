@@ -24,39 +24,49 @@ namespace AirportTicketBookingSystem.tests
         }
 
         [Fact]
-        public void ShouldReturnBookingById()
+        public void FilterByBookingId_ShouldReturnBookingById()
         {
+            //Arrange
             var booking = fixture.Create<Booking>();
 
             _manager.Setup(m => m.AllBookings).Returns(new List<IBooking> { booking });
 
+            //Act
             var result = bookingChecker.FilterByBookingId(booking.BookingId);
 
+            //Assert
             Assert.Equal(booking, result.FirstOrDefault());
         }
 
         [Fact]
-        public void ShouldReturnBookingsByFlightId()
+        public void FilterByFlightId_ShouldReturnBookingsByFlightId()
         {
+            //Arrange
             var bookings = fixture.CreateMany<IBooking>(3).ToList();
             var flightId = bookings.First().Flight.FlightId;
 
             _manager.Setup(m => m.AllBookings).Returns(bookings);
 
+            //Act
             var result = bookingChecker.FilterByFlightId(flightId);
 
+            //Assert
             Assert.True(result.All(b => b.Flight.FlightId == flightId));
         }
+
         [Fact]
-        public void ShouldReturnBookingsByPassengerId()
+        public void FilterByPassengerId_ShouldReturnBookingsByPassengerId()
         {
+            //Arrange
             var bookings = fixture.CreateMany<IBooking>(3).ToList();
             var passengerId = bookings.First().PassengerId;
 
             _manager.Setup(m => m.AllBookings).Returns(bookings);
 
+            //Act
             var result = bookingChecker.FilterByPassengerId(passengerId);
 
+            //Assert
             Assert.True(result.All(b => b.PassengerId == passengerId));
         }
     }

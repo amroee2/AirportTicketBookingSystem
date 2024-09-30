@@ -58,85 +58,103 @@ namespace AirportTicketBookingSystem.tests
         }
 
         [Fact]
-        public void ShouldBookFlight()
+        public void BookFlight_ShouldBookFlight()
         {
+            //Arrange
             var passengerBooking = new PassengerFlightBooker(mockManager.Object, mockFlightFilter.Object);
             ClassType randomClassType = fixture.Create<ClassType>();
 
             mockFlightFilter.Setup(f => f.PrintAllFlights(It.IsAny<List<IFlight>>()));
 
+            //Act
             passengerBooking.BookFlight(passenger, 1, randomClassType, AllFlights);
-
             var bookedFlight = passenger.Bookings!.First();
+
+            //Assert
             Assert.Single(passenger.Bookings);
             Assert.Equal(1, bookedFlight.Flight.FlightId);
             Assert.Equal(randomClassType, bookedFlight.ClassType);
         }
 
         [Fact]
-        public void ShouldNotBookFlight()
+        public void BookFlight_ShouldNotBookFlight()
         {
+            //Arrange
             var passengerBooking = new PassengerFlightBooker(mockManager.Object, mockFlightFilter.Object);
             ClassType randomClassType = fixture.Create<ClassType>();
 
             mockFlightFilter.Setup(f => f.PrintAllFlights(It.IsAny<List<IFlight>>()));
 
+            //Act
             passengerBooking.BookFlight(passenger, 1, randomClassType, AllFlights);
             passengerBooking.BookFlight(passenger, 1, randomClassType, AllFlights);
 
+            //Assert
             Assert.Single(passenger.Bookings!);
-            Assert.Equal(1, passenger.Bookings.First().Flight.FlightId); // Verifying the correct flight is booked
+            Assert.Equal(1, passenger.Bookings.First().Flight.FlightId);
         }
 
         [Fact]
-        public void ShouldCancelBooking()
+        public void CancelPersonalBooking_ShouldCancelBooking()
         {
+            //Arrange
             PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
             Booking booking = fixture.Create<Booking>();
             passenger.Bookings!.Add(booking);
 
+            //Act
             passengerFlightManager.CancelPersonalBooking(passenger, booking.BookingId);
 
+            //Assert
             Assert.Empty(passenger.Bookings!);
         }
 
         [Fact]
-        public void ShouldNotCancelBooking()
+        public void CancelPersonalBooking_ShouldNotCancelBooking()
         {
+            //Arrange
             PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
             Booking booking = fixture.Create<Booking>();
             passenger.Bookings!.Add(booking);
 
+            //Act
             passengerFlightManager.CancelPersonalBooking(passenger, booking.BookingId + 1);
 
-            Assert.Single(passenger.Bookings!); // Ensure no bookings were canceled
-            Assert.Equal(booking.BookingId, passenger.Bookings.First().BookingId); // Ensure it's still the same booking
+            //Assert
+            Assert.Single(passenger.Bookings!);
+            Assert.Equal(booking.BookingId, passenger.Bookings.First().BookingId);
         }
 
         [Fact]
-        public void ShouldModifyBooking()
+        public void ModifyPersonalBooking_ShouldModifyBooking()
         {
+            //Arrange
             PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
             Booking booking = fixture.Create<Booking>();
             passenger.Bookings!.Add(booking);
 
+            //Act
             passengerFlightManager.ModifyPersonalBooking(passenger, booking.BookingId, ClassType.Business);
 
+            //Assert
             var modifiedBooking = passenger.Bookings!.First();
-            Assert.Equal(ClassType.Business, modifiedBooking.ClassType); // Ensure class type was updated
+            Assert.Equal(ClassType.Business, modifiedBooking.ClassType);
         }
 
         [Fact]
-        public void ShouldNotModifyBooking()
+        public void ModifyPersonalBooking_ShouldNotModifyBooking()
         {
+            //Arrange
             PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
             Booking booking = fixture.Create<Booking>();
             passenger.Bookings!.Add(booking);
 
+            //Act
             passengerFlightManager.ModifyPersonalBooking(passenger, booking.BookingId + 1, ClassType.Economy);
 
+            //Assert
             var unmodifiedBooking = passenger.Bookings!.FirstOrDefault(b => b.BookingId == booking.BookingId);
-            Assert.Equal(booking.ClassType, unmodifiedBooking?.ClassType); // Ensure the class type was not changed
+            Assert.Equal(booking.ClassType, unmodifiedBooking?.ClassType);
         }
     }
 }

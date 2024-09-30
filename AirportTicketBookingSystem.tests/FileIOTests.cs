@@ -11,26 +11,35 @@ namespace AirportTicketBookingSystem.tests
     public class FileIOTests
     {
         Mock<IErrorLogger> logger = new Mock<IErrorLogger>();
+
         public FileIOTests()
         {
             logger.Setup(x => x.ErrorMessages).Returns(new List<string>());
         }
+
         [Fact]
-        public void ShouldValidateFlight()
+        public void ValidateFlight_ShouldValidateFlight()
         {
+            //Arrange
             FlightValidator flightValidator = new FlightValidator(logger.Object);
             IFixture fixture = new Fixture().Customize(new AutoMoqCustomization());
             var flight = fixture.Build<Flight>()
                                 .With(f => f.FlightId, 100)
                                 .With(f => f.DepartureDate, new DateTime(2025, 9, 5))
                                 .Create();
+
+            //Act
             flightValidator.ValidateFlight(flight);
+
+            //Assert
             Assert.Contains(GeneralUtility.flights, fligt => flight.FlightId == 100);
             GeneralUtility.flights.Remove(flight);
         }
+
         [Fact]
-        public void ShouldNotValidateFlight()
+        public void ValidateFlight_ShouldNotValidateFlight()
         {
+            //Arrange
             FlightValidator flightValidator = new FlightValidator(logger.Object);
             IFixture fixture = new Fixture().Customize(new AutoMoqCustomization());
             var flight = fixture.Build<Flight>()
@@ -39,15 +48,21 @@ namespace AirportTicketBookingSystem.tests
                                 .Create();
             GeneralUtility.flights.Add(flight);
             int count = GeneralUtility.flights.Count;
+
+            //Act
             flightValidator.ValidateFlight(flight);
+
+            //Assert
             Assert.Equal(count, GeneralUtility.flights.Count);
             Assert.Contains(logger.Object.ErrorMessages, message => message.Contains($"Issue with flight 100: Flight with ID {flight.FlightId} already exists."));
             GeneralUtility.flights.Remove(flight);
 
         }
+
         [Fact]
-        public async Task ShouldImportAllValidFlights()
+        public async Task ImportFromCsvAsync_ShouldImportAllValidFlights()
         {
+            //Arrange
             var mockFlightValidator = new Mock<IFlightValidator>();
 
             mockFlightValidator.Setup(v => v.ValidateFlight(It.IsAny<IFlight>()))
@@ -63,15 +78,17 @@ namespace AirportTicketBookingSystem.tests
                                        GeneralUtility.flights.Add(flight);
                                    }
                                });
-            mockFlightValidator.Setup(v => v.PrintValidationResults());
-            var flightImport = new FlightImport(mockFlightValidator.Object);
+            var flightImport = new FlightImportRepository(mockFlightValidator.Object);
+
+            //Act
             await flightImport.ImportFromCsvAsync();
+
+            //Assert
             Assert.Equal(18, GeneralUtility.flights.Count);
             Assert.Equal(2, logger.Object.ErrorMessages.Count);
-            mockFlightValidator.Verify(v => v.ValidateFlight(It.IsAny<IFlight>()), Times.Exactly(20)); // Assuming 18 flights
+            mockFlightValidator.Verify(v => v.ValidateFlight(It.IsAny<IFlight>()), Times.Exactly(20));
             mockFlightValidator.Verify(v => v.PrintValidationResults(), Times.Once);
 
         }
-
     }
 }
