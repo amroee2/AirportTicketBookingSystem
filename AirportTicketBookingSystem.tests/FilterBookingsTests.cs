@@ -43,7 +43,7 @@ namespace AirportTicketBookingSystem.tests
         {
             //Arrange
             var bookings = fixture.CreateMany<IBooking>(3).ToList();
-            var flightId = bookings.First().Flight.FlightId;
+            var flightId = 1;
 
             _manager.Setup(m => m.AllBookings).Returns(bookings);
 
@@ -52,6 +52,7 @@ namespace AirportTicketBookingSystem.tests
 
             //Assert
             Assert.True(result.All(b => b.Flight.FlightId == flightId));
+            Assert.True(result.Count == bookings.Count(b => b.Flight.FlightId == flightId));
         }
 
         [Fact]
@@ -59,7 +60,7 @@ namespace AirportTicketBookingSystem.tests
         {
             //Arrange
             var bookings = fixture.CreateMany<IBooking>(3).ToList();
-            var passengerId = bookings.First().PassengerId;
+            var passengerId = 1;
 
             _manager.Setup(m => m.AllBookings).Returns(bookings);
 
@@ -68,6 +69,7 @@ namespace AirportTicketBookingSystem.tests
 
             //Assert
             Assert.True(result.All(b => b.PassengerId == passengerId));
+            Assert.True(result.Count == bookings.Count(b => b.PassengerId == passengerId));
         }
     }
 }
