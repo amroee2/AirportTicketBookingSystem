@@ -79,9 +79,10 @@ namespace AirportTicketBookingSystem.tests
                                    }
                                });
             var flightImport = new FlightImportRepository(mockFlightValidator.Object);
-
+            string directory = "IOTestFiles";
+            string file = "Testflights.csv";
             //Act
-            await flightImport.ImportFromCsvAsync();
+            await flightImport.ImportFromCsvAsync(directory, file);
 
             //Assert
             Assert.Equal(18, GeneralUtility.flights.Count);

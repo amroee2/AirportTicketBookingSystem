@@ -33,30 +33,6 @@ namespace AirportTicketBookingSystem.tests
             mockManager.Setup(m => m.AllBookings).Returns(new List<IBooking>());
         }
 
-        private async Task ImportFromCsvAsync()
-        {
-            try
-            {
-                string baseDirectory = AppContext.BaseDirectory;
-                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
-
-                var config = new CsvConfiguration(CultureInfo.InvariantCulture);
-                using (var reader = new StreamReader(filePath))
-                using (var csv = new CsvReader(reader, config))
-                {
-                    while (await csv.ReadAsync())
-                    {
-                        var flight = csv.GetRecord<Flight>();
-                        AllFlights.Add(flight);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"An error occurred while reading the file: {e.Message}");
-            }
-        }
-
         [Fact]
         public void BookFlight_ShouldBookFlight()
         {
@@ -131,6 +107,7 @@ namespace AirportTicketBookingSystem.tests
             //Arrange
             PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
             Booking booking = fixture.Create<Booking>();
+            booking.ClassType = ClassType.Economy;
             passenger.Bookings!.Add(booking);
 
             //Act
@@ -147,14 +124,39 @@ namespace AirportTicketBookingSystem.tests
             //Arrange
             PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
             Booking booking = fixture.Create<Booking>();
+            booking.ClassType = ClassType.Economy;
             passenger.Bookings!.Add(booking);
 
             //Act
-            passengerFlightManager.ModifyPersonalBooking(passenger, booking.BookingId + 1, ClassType.Economy);
+            passengerFlightManager.ModifyPersonalBooking(passenger, booking.BookingId + 1, ClassType.Business);
 
             //Assert
             var unmodifiedBooking = passenger.Bookings!.FirstOrDefault(b => b.BookingId == booking.BookingId);
             Assert.Equal(booking.ClassType, unmodifiedBooking?.ClassType);
+        }
+
+        private async Task ImportFromCsvAsync()
+        {
+            try
+            {
+                string baseDirectory = AppContext.BaseDirectory;
+                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
+
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture);
+                using (var reader = new StreamReader(filePath))
+                using (var csv = new CsvReader(reader, config))
+                {
+                    while (await csv.ReadAsync())
+                    {
+                        var flight = csv.GetRecord<Flight>();
+                        AllFlights.Add(flight);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred while reading the file: {e.Message}");
+            }
         }
     }
 }

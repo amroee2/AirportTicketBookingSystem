@@ -14,12 +14,11 @@ namespace AirportTicketBookingSystem.Airport_Repository
             _flightValidator = flightValidator;
         }
 
-        public async Task ImportFromCsvAsync()
+        public async Task ImportFromCsvAsync(string directory, string file)
         {
             try
             {
-                string baseDirectory = AppContext.BaseDirectory;
-                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
+                string filePath = Path.Combine(AppContext.BaseDirectory, directory, file);
 
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture);
                 using (var reader = new StreamReader(filePath))

@@ -48,7 +48,7 @@ public class ManagerUtilities
                _= _fileManager.ExportToCsvAsync();
                 break;
             case ManagerOption.ImportBookingsToCsv:
-               _= _fileManager.ImportFromCsvAsync();
+               _= _fileManager.ImportFromCsvAsync("Airport Repository", "File");
                 break;
             case ManagerOption.ViewErrorMessages:
                 _bookingManager.ViewErrorMessages();

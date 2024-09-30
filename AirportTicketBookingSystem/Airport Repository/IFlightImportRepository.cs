@@ -2,6 +2,6 @@
 {
     public interface IFlightImportRepository
     {
-        public Task ImportFromCsvAsync();
+        public Task ImportFromCsvAsync(string directory, string file);
     }
 }

@@ -13,9 +13,9 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.FileHandlin
             _flightExport = flightExport;
         }
 
-        public async Task ImportFromCsvAsync()
+        public async Task ImportFromCsvAsync(string directory, string file)
         {
-            await _flightImport.ImportFromCsvAsync();
+            await _flightImport.ImportFromCsvAsync(directory, file);
         }
 
         public async Task ExportToCsvAsync()

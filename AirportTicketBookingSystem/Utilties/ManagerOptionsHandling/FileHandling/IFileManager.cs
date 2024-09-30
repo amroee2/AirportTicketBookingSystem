@@ -2,7 +2,7 @@
 {
     public interface IFileManager
     {
-        Task ImportFromCsvAsync();
+        Task ImportFromCsvAsync(string direcotry, string file);
         Task ExportToCsvAsync();
     }
 }

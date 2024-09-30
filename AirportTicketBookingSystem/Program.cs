@@ -41,7 +41,7 @@ class Program
             .BuildServiceProvider();
         var generalUtility = serviceProvider.GetRequiredService<GeneralUtility>();
         FlightImportRepository flightImport = new FlightImportRepository(new FlightValidator(new ErrorLogger()));
-        _= flightImport.ImportFromCsvAsync();
+        _= flightImport.ImportFromCsvAsync("Airport Repository", "flights.csv");
         generalUtility.PrintMenu();
     }
 }
