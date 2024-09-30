@@ -105,6 +105,8 @@ namespace AirportTicketBookingSystem.tests
         public void ModifyPersonalBooking_ShouldModifyBooking()
         {
             //Arrange
+            var stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
             PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
             Booking booking = fixture.Create<Booking>();
             booking.ClassType = ClassType.Economy;
@@ -112,16 +114,21 @@ namespace AirportTicketBookingSystem.tests
 
             //Act
             passengerFlightManager.ModifyPersonalBooking(passenger, booking.BookingId, ClassType.Business);
+            var output = stringWriter.ToString().Trim();
+            Console.SetOut(Console.Out);
 
             //Assert
             var modifiedBooking = passenger.Bookings!.First();
             Assert.Equal(ClassType.Business, modifiedBooking.ClassType);
+            Assert.Equal("Booking Modified", output);
         }
 
         [Fact]
         public void ModifyPersonalBooking_ShouldNotModifyBooking()
         {
             //Arrange
+            var stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
             PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
             Booking booking = fixture.Create<Booking>();
             booking.ClassType = ClassType.Economy;
@@ -129,10 +136,13 @@ namespace AirportTicketBookingSystem.tests
 
             //Act
             passengerFlightManager.ModifyPersonalBooking(passenger, booking.BookingId + 1, ClassType.Business);
+            var output = stringWriter.ToString().Trim();
+            Console.SetOut(Console.Out);
 
             //Assert
             var unmodifiedBooking = passenger.Bookings!.FirstOrDefault(b => b.BookingId == booking.BookingId);
             Assert.Equal(booking.ClassType, unmodifiedBooking?.ClassType);
+            Assert.Equal("Invalid Booking ID", output);
         }
 
         private async Task ImportFromCsvAsync()
@@ -140,7 +150,7 @@ namespace AirportTicketBookingSystem.tests
             try
             {
                 string baseDirectory = AppContext.BaseDirectory;
-                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
+                string filePath = Path.Combine(baseDirectory, "IOTestFiles", "Testflights.csv");
 
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture);
                 using (var reader = new StreamReader(filePath))

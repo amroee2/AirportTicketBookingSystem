@@ -97,7 +97,7 @@ namespace AirportTicketBookingSystem.tests
             try
             {
                 string baseDirectory = AppContext.BaseDirectory;
-                string filePath = Path.Combine(baseDirectory, "Airport Repository", "flights.csv");
+                string filePath = Path.Combine(baseDirectory, "IOTestFiles", "Testflights.csv");
 
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture);
                 using (var reader = new StreamReader(filePath))
