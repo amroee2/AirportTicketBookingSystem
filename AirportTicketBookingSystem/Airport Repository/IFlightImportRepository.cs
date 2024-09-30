@@ -1,6 +1,6 @@
 ﻿namespace AirportTicketBookingSystem.Airport_Repository
 {
-    public interface IFlightImport
+    public interface IFlightImportRepository
     {
         public Task ImportFromCsvAsync();
     }

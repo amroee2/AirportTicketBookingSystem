@@ -4,10 +4,10 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.FileHandlin
 {
     public class FileManager : IFileManager
     {
-        private readonly IFlightImport _flightImport;
-        private readonly IFlightExport _flightExport;
+        private readonly IFlightImportRepository _flightImport;
+        private readonly IFlightExportRepository _flightExport;
 
-        public FileManager(IFlightImport flightImport, IFlightExport flightExport)
+        public FileManager(IFlightImportRepository flightImport, IFlightExportRepository flightExport)
         {
             _flightImport = flightImport;
             _flightExport = flightExport;

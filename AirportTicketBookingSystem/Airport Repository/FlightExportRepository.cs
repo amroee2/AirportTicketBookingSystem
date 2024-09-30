@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace AirportTicketBookingSystem.Airport_Repository
 {
-    public class FlightExport : IFlightExport
+    public class FlightExportRepository : IFlightExportRepository
     {
         public async Task ExportToCSVAsync()
         {

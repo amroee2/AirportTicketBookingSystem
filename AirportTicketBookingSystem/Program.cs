@@ -15,8 +15,8 @@ class Program
     static void Main(string[] args)
     {
         var serviceProvider = new ServiceCollection()
-            .AddScoped<IFlightExport, FlightExport>()
-            .AddScoped<IFlightImport, FlightImport>()
+            .AddScoped<IFlightExportRepository, FlightExportRepository>()
+            .AddScoped<IFlightImportRepository, FlightImportRepository>()
             .AddScoped<IFlightValidator, FlightValidator>()
             .AddScoped<IBooking, Booking>()
             .AddScoped<IPassenger, Passenger>()
@@ -40,7 +40,7 @@ class Program
             .AddScoped<GeneralUtility>()
             .BuildServiceProvider();
         var generalUtility = serviceProvider.GetRequiredService<GeneralUtility>();
-        FlightImport flightImport = new FlightImport(new FlightValidator(new ErrorLogger()));
+        FlightImportRepository flightImport = new FlightImportRepository(new FlightValidator(new ErrorLogger()));
         _= flightImport.ImportFromCsvAsync();
         generalUtility.PrintMenu();
     }

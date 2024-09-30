@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirportTicketBookingSystem.Utilties
 {
-    public interface IFlightExport
+    public interface IFlightExportRepository
     {
         Task ExportToCSVAsync();
     }

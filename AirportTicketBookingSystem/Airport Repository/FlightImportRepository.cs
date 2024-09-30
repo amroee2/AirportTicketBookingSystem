@@ -5,11 +5,11 @@ using System.Globalization;
 
 namespace AirportTicketBookingSystem.Airport_Repository
 {
-    public class FlightImport : IFlightImport
+    public class FlightImportRepository : IFlightImportRepository
     {
         private readonly IFlightValidator _flightValidator;
 
-        public FlightImport(IFlightValidator flightValidator)
+        public FlightImportRepository(IFlightValidator flightValidator)
         {
             _flightValidator = flightValidator;
         }
