@@ -6,9 +6,9 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHand
 {
     public class BookingChecker : IBookingFilter
     {
-        private IManager _manager;
+        private Manager _manager;
         private IFlightFilter _flightFilter;
-        public BookingChecker(IManager manager)
+        public BookingChecker(Manager manager)
         {
             _manager = manager;
             _flightFilter = new FlightChecker();
@@ -38,7 +38,7 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHand
 
         private void CheckFilterType(BookingFilter operation)
         {
-            List<IBooking> bookings = new List<IBooking>();
+            List<Booking> bookings = new List<Booking>();
             switch (operation)
             {
                 case BookingFilter.ByBookingId:
@@ -60,12 +60,12 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHand
                     PrintBookings(bookings);
                     break;
                 case BookingFilter.ByFlightInformation:
-                    List<IFlight>? flights = _manager.AllBookings!.Select(flights => flights.Flight).Distinct().ToList();
+                    List<Flight>? flights = _manager.AllBookings!.Select(flights => flights.Flight).Distinct().ToList();
                     _flightFilter.CheckAvailableFlights(flights);
                     break;
             }
         }
-        private void PrintBookings(List<IBooking> bookings)
+        private void PrintBookings(List<Booking> bookings)
         {
             if (!bookings.Any())
             {
@@ -79,27 +79,27 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.BookingHand
             }
         }
 
-        public List<IBooking> FilterByPassengerId(int passengerId)
+        public List<Booking> FilterByPassengerId(int passengerId)
         {
-            List<IBooking>? bookings = _manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
+            List<Booking>? bookings = _manager.AllBookings!.Where(b => b.PassengerId == passengerId).ToList();
             return bookings;
         }
 
-        public List<IBooking> FilterByFlightId(int flightId)
+        public List<Booking> FilterByFlightId(int flightId)
         {
-            List<IBooking>? bookings = _manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
+            List<Booking>? bookings = _manager.AllBookings!.Where(b => b.Flight.FlightId == flightId).ToList();
 
             return bookings;
         }
 
-        public List<IBooking> FilterByBookingId(int bookingId)
+        public List<Booking> FilterByBookingId(int bookingId)
         {
-            IBooking? booking = _manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
+            Booking? booking = _manager.AllBookings!.FirstOrDefault(b => b.BookingId == bookingId);
             if (booking == null)
             {
-                return new List<IBooking>();
+                return new List<Booking>();
             }
-            return new List<IBooking> { booking };
+            return new List<Booking> { booking };
         }
 
     }

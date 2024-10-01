@@ -4,9 +4,9 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.AccountHa
 {
     public interface IAccount
     {
-        public IPassenger RequestLogInDetails();
-        public IPassenger LogIn(int id, string? firstName = null, string? lastName = null);
-        public IPassenger CheckPassenger(int passengerId);
+        public Passenger RequestLogInDetails();
+        public Passenger LogIn(int id, string? firstName = null, string? lastName = null);
+        public Passenger CheckPassenger(int passengerId);
 
     }
 }

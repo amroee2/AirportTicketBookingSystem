@@ -15,32 +15,31 @@ namespace AirportTicketBookingSystem.tests
 {
     public class PassengerBookingTests
     {
-        List<IFlight> AllFlights = new List<IFlight>();
-        Mock<IManager> mockManager;
+        List<Flight> AllFlights = new List<Flight>();
+        Manager mockManager;
         Mock<IFlightFilter> mockFlightFilter;
         IFixture fixture;
-        IPassenger passenger;
+        Passenger passenger;
 
         public PassengerBookingTests()
         {
             ImportFromCsvAsync().Wait();
-            mockManager = new Mock<IManager>();
             mockFlightFilter = new Mock<IFlightFilter>();
 
             fixture = new Fixture().Customize(new AutoMoqCustomization { ConfigureMembers = true });
+            mockManager = fixture.Create<Manager>();
             passenger = fixture.Create<Passenger>();
             passenger.Bookings!.Clear();
-            mockManager.Setup(m => m.AllBookings).Returns(new List<IBooking>());
         }
 
         [Fact]
         public void BookFlight_ShouldBookFlight()
         {
             //Arrange
-            var passengerBooking = new PassengerFlightBooker(mockManager.Object, mockFlightFilter.Object);
+            var passengerBooking = new PassengerFlightBooker(mockManager, mockFlightFilter.Object);
             ClassType randomClassType = fixture.Create<ClassType>();
 
-            mockFlightFilter.Setup(f => f.PrintAllFlights(It.IsAny<List<IFlight>>()));
+            mockFlightFilter.Setup(f => f.PrintAllFlights(It.IsAny<List<Flight>>()));
 
             //Act
             passengerBooking.BookFlight(passenger, 1, randomClassType, AllFlights);
@@ -56,10 +55,10 @@ namespace AirportTicketBookingSystem.tests
         public void BookFlight_ShouldNotBookFlight()
         {
             //Arrange
-            var passengerBooking = new PassengerFlightBooker(mockManager.Object, mockFlightFilter.Object);
+            var passengerBooking = new PassengerFlightBooker(mockManager, mockFlightFilter.Object);
             ClassType randomClassType = fixture.Create<ClassType>();
 
-            mockFlightFilter.Setup(f => f.PrintAllFlights(It.IsAny<List<IFlight>>()));
+            mockFlightFilter.Setup(f => f.PrintAllFlights(It.IsAny<List<Flight>>()));
 
             //Act
             passengerBooking.BookFlight(passenger, 1, randomClassType, AllFlights);
@@ -74,7 +73,7 @@ namespace AirportTicketBookingSystem.tests
         public void CancelPersonalBooking_ShouldCancelBooking()
         {
             //Arrange
-            PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
+            PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager);
             Booking booking = fixture.Create<Booking>();
             passenger.Bookings!.Add(booking);
 
@@ -89,7 +88,7 @@ namespace AirportTicketBookingSystem.tests
         public void CancelPersonalBooking_ShouldNotCancelBooking()
         {
             //Arrange
-            PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
+            PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager);
             Booking booking = fixture.Create<Booking>();
             passenger.Bookings!.Add(booking);
 
@@ -107,7 +106,7 @@ namespace AirportTicketBookingSystem.tests
             //Arrange
             var stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
-            PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
+            PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager);
             Booking booking = fixture.Create<Booking>();
             booking.ClassType = ClassType.Economy;
             passenger.Bookings!.Add(booking);
@@ -129,7 +128,7 @@ namespace AirportTicketBookingSystem.tests
             //Arrange
             var stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
-            PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager.Object);
+            PassengerFlightManager passengerFlightManager = new PassengerFlightManager(mockManager);
             Booking booking = fixture.Create<Booking>();
             booking.ClassType = ClassType.Economy;
             passenger.Bookings!.Add(booking);

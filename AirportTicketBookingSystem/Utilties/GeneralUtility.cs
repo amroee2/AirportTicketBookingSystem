@@ -6,7 +6,7 @@ namespace AirportTicketBookingSystem.Utilties
 {
     public class GeneralUtility
     {
-        public static List<IFlight> flights = new List<IFlight>();
+        public static List<Flight> flights = new List<Flight>();
 
         private readonly ManagerUtilities _managerUtilities;
         private readonly PassengerUtilities _passengerUtilities;

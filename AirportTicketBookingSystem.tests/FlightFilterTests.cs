@@ -9,8 +9,8 @@ namespace AirportTicketBookingSystem.tests
 {
     public class FlightFilterTests
     {
-        List<IFlight> flightsList;
-        List<IFlight> AllFlights = new List<IFlight>();
+        List<Flight> flightsList;
+        List<Flight> AllFlights = new List<Flight>();
         FlightChecker flightChecker;
 
         private readonly Fixture fixture;
@@ -19,7 +19,7 @@ namespace AirportTicketBookingSystem.tests
         {
             ImportFromCsvAsync().Wait();
             flightChecker = new FlightChecker();
-            flightsList = new List<IFlight>();
+            flightsList = new List<Flight>();
             fixture = new Fixture();
         }
 

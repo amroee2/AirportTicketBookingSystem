@@ -5,30 +5,31 @@ using Xunit;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using AutoFixture;
 
 namespace AirportTicketBookingSystem.tests
 {
     public class PassengerAccountTests
     {
-        private readonly Mock<IManager> mockManager;
+        private readonly Manager mockManager;
 
         public PassengerAccountTests()
         {
-            mockManager = new Mock<IManager>();
-            mockManager.Setup(x => x.AllPassengers).Returns(new List<IPassenger>());
+            Fixture fixture = new Fixture();
+            mockManager = fixture.Create<Manager>();
         }
 
         [Fact]
         public void LogIn_ShouldCreateNewPassenger()
         {
             // Arrange
-            PassengerAccount passengerAccount = new PassengerAccount(mockManager.Object);
+            PassengerAccount passengerAccount = new PassengerAccount(mockManager);
 
             // Act
-            IPassenger passenger = passengerAccount.LogIn(1, "Amro", "Qadadha");
+            Passenger passenger = passengerAccount.LogIn(1, "Amro", "Qadadha");
 
             // Assert
-            Assert.Contains(passenger, mockManager.Object.AllPassengers!);
+            Assert.Contains(passenger, mockManager.AllPassengers!);
             Assert.Equal("Amro", passenger.FirstName);
             Assert.Equal("Qadadha", passenger.LastName);
             Assert.Equal(1, passenger.PassengerId);
@@ -42,11 +43,10 @@ namespace AirportTicketBookingSystem.tests
             Console.SetOut(stringWriter);
 
             var mockPassenger = new Passenger("Amro", "Qadadha", 1);
-            mockManager.Setup(x => x.AllPassengers).Returns(new List<IPassenger> { mockPassenger });
-            PassengerAccount passengerAccount = new PassengerAccount(mockManager.Object);
-
+            PassengerAccount passengerAccount = new PassengerAccount(mockManager);
+            mockManager.AllPassengers.Add(mockPassenger);
             // Act
-            IPassenger passenger = passengerAccount.LogIn(1, "Amro", "Qadadha");
+            Passenger passenger = passengerAccount.LogIn(1, "Amro", "Qadadha");
             var output = stringWriter.ToString().Trim().Split(Environment.NewLine);
             Console.SetOut(Console.Out);
 

@@ -5,13 +5,13 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
 {
     public class PassengerFlightManager : IFlightManager
     {
-        public IManager _manager;
+        public Manager _manager;
 
-        public PassengerFlightManager(IManager manager)
+        public PassengerFlightManager(Manager manager)
         {
             _manager = manager;
         }
-        public void ManageBookings(IPassenger passenger)
+        public void ManageBookings(Passenger passenger)
         {
             if (!passenger.Bookings.Any())
             {
@@ -39,7 +39,7 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
             }
         }
 
-        private void CheckManagingOption(IPassenger passenger, ManageBooking operation)
+        private void CheckManagingOption(Passenger passenger, ManageBooking operation)
         {
             switch (operation)
             {
@@ -66,9 +66,9 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
             }
         }
 
-        public void ModifyPersonalBooking(IPassenger passenger, int bookingId, ClassType classType)
+        public void ModifyPersonalBooking(Passenger passenger, int bookingId, ClassType classType)
         {
-            IBooking selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+            Booking selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
             if (selectedBooking == null)
             {
                 Console.WriteLine("Invalid Booking ID");
@@ -81,9 +81,9 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
             }
         }
 
-        public void CancelPersonalBooking(IPassenger passenger, int bookingId)
+        public void CancelPersonalBooking(Passenger passenger, int bookingId)
         {
-            IBooking selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+            Booking selectedBooking = passenger.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
             if (selectedBooking == null)
             {
                 Console.WriteLine("Invalid Booking ID");
@@ -97,7 +97,7 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
             }
         }
 
-        public void ViewPersonalBookings(IPassenger passenger)
+        public void ViewPersonalBookings(Passenger passenger)
         {
             foreach (var booking in passenger.Bookings)
             {

@@ -6,16 +6,16 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
     public class PassengerFlightBooker : IPassengerBooking
     {
         public static int incrementBookingId = 1;
-        public IManager _manager { get; set; }
+        public Manager _manager { get; set; }
         public IFlightFilter _flightFilter { get; set; }
 
-        public PassengerFlightBooker(IManager manager, IFlightFilter flightFilter)
+        public PassengerFlightBooker(Manager manager, IFlightFilter flightFilter)
         {
             _manager = manager;
             _flightFilter = flightFilter;
         }
 
-        public void CollectFlightBookingDetails(IPassenger passenger)
+        public void CollectFlightBookingDetails(Passenger passenger)
         {
             _flightFilter.PrintAllFlights(GeneralUtility.flights);
 
@@ -36,9 +36,9 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
             BookFlight(passenger, flightId, (ClassType)classType, GeneralUtility.flights);
         }
 
-        public void BookFlight(IPassenger passenger, int flightId, ClassType classType, List<IFlight> AllFlights)
+        public void BookFlight(Passenger passenger, int flightId, ClassType classType, List<Flight> AllFlights)
         {
-            IFlight? selectedFlight = AllFlights.FirstOrDefault(f => f.FlightId == flightId);
+            Flight? selectedFlight = AllFlights.FirstOrDefault(f => f.FlightId == flightId);
 
             var existingBooking = passenger.Bookings.FirstOrDefault(b => b.Flight.FlightId == flightId);
             if (existingBooking != null)
@@ -53,7 +53,7 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.BookingHa
                 return;
             }
 
-            IBooking booking = new Booking(incrementBookingId, $"{passenger.FirstName} {passenger.LastName}", passenger.PassengerId, selectedFlight, classType);
+            Booking booking = new Booking(incrementBookingId, $"{passenger.FirstName} {passenger.LastName}", passenger.PassengerId, selectedFlight, classType);
             incrementBookingId++;
 
             passenger.Bookings.Add(booking);

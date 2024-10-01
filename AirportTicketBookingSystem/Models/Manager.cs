@@ -2,9 +2,9 @@
 
 namespace AirportTicketBookingSystem.Models
 {
-    public class Manager : IManager
+    public class Manager
     {
-        public List<IBooking>? AllBookings { get; set; } = new List<IBooking>();
-        public List<IPassenger>? AllPassengers { get; set; } = new List<IPassenger>();
+        public List<Booking>? AllBookings { get; set; } = new List<Booking>();
+        public List<Passenger>? AllPassengers { get; set; } = new List<Passenger>();
     }
 }

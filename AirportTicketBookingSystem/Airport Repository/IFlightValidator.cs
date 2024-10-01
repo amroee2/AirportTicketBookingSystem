@@ -4,7 +4,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
 {
     public interface IFlightValidator
     {
-        void ValidateFlight(IFlight flight);
+        void ValidateFlight(Flight flight);
         void PrintValidationResults();
     }
 }

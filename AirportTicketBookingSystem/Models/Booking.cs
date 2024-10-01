@@ -1,11 +1,11 @@
 ﻿namespace AirportTicketBookingSystem.Models
 {
-    public class Booking : IBooking
+    public class Booking
     {
         public int BookingId { get; set; }
         public string? PassengerName { get; set; }
         public int PassengerId { get; set; }
-        public IFlight? Flight { get; set; }
+        public Flight? Flight { get; set; }
         public ClassType ClassType { get; set; }
         public int Price
         {
@@ -24,7 +24,7 @@
             }
         }
 
-        public Booking(int bookingId, string passengerName, int passengerId, IFlight flight, ClassType classType)
+        public Booking(int bookingId, string passengerName, int passengerId, Flight flight, ClassType classType)
         {
             BookingId = bookingId;
             PassengerName = passengerName;

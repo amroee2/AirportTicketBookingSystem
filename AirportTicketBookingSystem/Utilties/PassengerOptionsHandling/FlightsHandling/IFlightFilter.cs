@@ -4,7 +4,7 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.FlightsHa
 {
     public interface IFlightFilter
     {
-        void CheckAvailableFlights(List<IFlight> FlightsList);
-        void PrintAllFlights(List<IFlight> FlightsList);
+        void CheckAvailableFlights(List<Flight> FlightsList);
+        void PrintAllFlights(List<Flight> FlightsList);
     }
 }

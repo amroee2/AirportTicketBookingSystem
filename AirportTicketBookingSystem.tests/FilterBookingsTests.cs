@@ -11,16 +11,16 @@ namespace AirportTicketBookingSystem.tests
     public class BookingCheckerTests
     {
         private readonly IFixture fixture;
-        private readonly Mock<IManager> _manager;
+        private readonly Manager _manager;
         private readonly BookingChecker bookingChecker;
 
         public BookingCheckerTests()
         {
             fixture = new Fixture().Customize(new AutoMoqCustomization());
 
-            _manager = fixture.Freeze<Mock<IManager>>();
+            _manager = fixture.Create<Manager>();
 
-            bookingChecker = new BookingChecker(_manager.Object);
+            bookingChecker = new BookingChecker(_manager);
         }
 
         [Fact]
@@ -28,9 +28,7 @@ namespace AirportTicketBookingSystem.tests
         {
             //Arrange
             var booking = fixture.Create<Booking>();
-
-            _manager.Setup(m => m.AllBookings).Returns(new List<IBooking> { booking });
-
+            _manager.AllBookings.Add(booking);
             //Act
             var result = bookingChecker.FilterByBookingId(booking.BookingId);
 
@@ -42,11 +40,9 @@ namespace AirportTicketBookingSystem.tests
         public void FilterByFlightId_ShouldReturnBookingsByFlightId()
         {
             //Arrange
-            var bookings = fixture.CreateMany<IBooking>(3).ToList();
+            var bookings = fixture.CreateMany<Booking>(3).ToList();
             var flightId = 1;
-
-            _manager.Setup(m => m.AllBookings).Returns(bookings);
-
+            _manager.AllBookings.AddRange(bookings);
             //Act
             var result = bookingChecker.FilterByFlightId(flightId);
 
@@ -59,10 +55,8 @@ namespace AirportTicketBookingSystem.tests
         public void FilterByPassengerId_ShouldReturnBookingsByPassengerId()
         {
             //Arrange
-            var bookings = fixture.CreateMany<IBooking>(3).ToList();
+            var bookings = fixture.CreateMany<Booking>(3).ToList();
             var passengerId = 1;
-
-            _manager.Setup(m => m.AllBookings).Returns(bookings);
 
             //Act
             var result = bookingChecker.FilterByPassengerId(passengerId);

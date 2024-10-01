@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AirportTicketBookingSystem.Models
 {
-    public class Flight : IFlight
+    public class Flight
     {
         [Required(ErrorMessage = "FlightId is required.")]
         [UniqueFlightId(ErrorMessage = "Flight id must be unique")]

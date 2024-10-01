@@ -15,11 +15,11 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.FileHandlin
             _flightManager = flightManager;
         }
 
-        public void BookFlight(IPassenger passenger)
+        public void BookFlight(Passenger passenger)
         {
             _passengerBooking.CollectFlightBookingDetails(passenger);
         }
-        public void ManageBookings(IPassenger passenger)
+        public void ManageBookings(Passenger passenger)
         {
             _flightManager.ManageBookings(passenger);
         }

@@ -20,7 +20,7 @@ namespace AirportTicketBookingSystem.Utilties.ManagerOptionsHandling.FileHandlin
         {
             _flightConstraints.CheckFlightConstraints();
         }
-        public void CheckAvailableFlights(List<IFlight> FlightsList)
+        public void CheckAvailableFlights(List<Flight> FlightsList)
         {
             _flightFilter.CheckAvailableFlights(FlightsList);
         }

@@ -65,8 +65,8 @@ namespace AirportTicketBookingSystem.tests
             //Arrange
             var mockFlightValidator = new Mock<IFlightValidator>();
 
-            mockFlightValidator.Setup(v => v.ValidateFlight(It.IsAny<IFlight>()))
-                               .Callback<IFlight>(flight =>
+            mockFlightValidator.Setup(v => v.ValidateFlight(It.IsAny<Flight>()))
+                               .Callback<Flight>(flight =>
                                {
                                    if (GeneralUtility.flights.Any(f => f.FlightId == flight.FlightId)
                                    || flight.DepartureDate < DateTime.Now)
@@ -87,7 +87,7 @@ namespace AirportTicketBookingSystem.tests
             //Assert
             Assert.Equal(18, GeneralUtility.flights.Count);
             Assert.Equal(2, logger.Object.ErrorMessages.Count);
-            mockFlightValidator.Verify(v => v.ValidateFlight(It.IsAny<IFlight>()), Times.Exactly(20));
+            mockFlightValidator.Verify(v => v.ValidateFlight(It.IsAny<Flight>()), Times.Exactly(20));
             mockFlightValidator.Verify(v => v.PrintValidationResults(), Times.Once);
 
         }

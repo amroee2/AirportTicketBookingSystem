@@ -13,7 +13,7 @@ namespace AirportTicketBookingSystem.Airport_Repository
         {
             _errorLogger = errorLogger;
         }
-        public void ValidateFlight(IFlight flight)
+        public void ValidateFlight(Flight flight)
         {
             var context = new ValidationContext(flight, serviceProvider: null, items: null);
             var results = new List<ValidationResult>();

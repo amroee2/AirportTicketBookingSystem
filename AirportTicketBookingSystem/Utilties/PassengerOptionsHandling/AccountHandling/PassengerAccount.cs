@@ -4,15 +4,15 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.AccountHa
 {
     public class PassengerAccount : IAccount
     {
-        public IManager _manager { get; set; }
+        public Manager _manager { get; set; }
 
-        public PassengerAccount(IManager manager)
+        public PassengerAccount(Manager manager)
         {
             _manager = manager;
         }
-        public IPassenger LogIn(int id, string? firstName = null, string? lastName = null)
+        public Passenger LogIn(int id, string? firstName = null, string? lastName = null)
         {
-            IPassenger passenger = CheckPassenger(id);
+            Passenger passenger = CheckPassenger(id);
             if (passenger is not null)
             {
                 Console.WriteLine("Welcome back!");
@@ -27,13 +27,13 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.AccountHa
             return passenger;
         }
 
-        public IPassenger RequestLogInDetails()
+        public Passenger RequestLogInDetails()
         {
             Console.WriteLine("Welcome Passenger!");
             Console.WriteLine("ID");
             string input = Console.ReadLine();
             _ = int.TryParse(input, out int id);
-            IPassenger passenger = CheckPassenger(id);
+            Passenger passenger = CheckPassenger(id);
             if (passenger is null)
             {
                 Console.WriteLine("First Name");
@@ -46,7 +46,7 @@ namespace AirportTicketBookingSystem.Utilties.PassengerOptionsHandling.AccountHa
             return LogIn(id);
         }
 
-        public IPassenger CheckPassenger(int passengerId)
+        public Passenger CheckPassenger(int passengerId)
         {
             var passenger = _manager.AllPassengers!.FirstOrDefault(p => p.PassengerId == passengerId);
             return passenger;
