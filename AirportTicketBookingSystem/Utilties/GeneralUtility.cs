@@ -1,13 +1,22 @@
-﻿using AirportTicketBookingSystem.Airport_Repository;
-using AirportTicketBookingSystem.Enums;
+﻿using AirportTicketBookingSystem.Enums;
 using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Utilties.PassengerOptionsHandling;
 
 namespace AirportTicketBookingSystem.Utilties
 {
-    public class Utilities
+    public class GeneralUtility
     {
         public static List<Flight> flights = new List<Flight>();
-        public static void PrintMenu()
+
+        private readonly ManagerUtilities _managerUtilities;
+        private readonly PassengerUtilities _passengerUtilities;
+        public GeneralUtility(ManagerUtilities managerUtilities, PassengerUtilities passengerUtilities)
+        {
+            _managerUtilities = managerUtilities;
+            _passengerUtilities = passengerUtilities;
+        }
+
+        public void PrintMenu()
         {
             while (true)
             {
@@ -19,18 +28,17 @@ namespace AirportTicketBookingSystem.Utilties
                     {
                         switch (operation)
                         {
-                            default:
-                                Console.WriteLine("Invalid Option");
-                                PrintMenu();
-                                break;
                             case UserType.Manager:
-                                ManagerUtilities.PrintMenu();
+                                _managerUtilities.PrintMenu();
                                 break;
                             case UserType.Passenger:
-                                PassengerUtilities.PrintMenu();
+                                _passengerUtilities.PrintMenu();
                                 break;
                             case UserType.Exit:
                                 return;
+                            default:
+                                Console.WriteLine("Invalid Option");
+                                break;
                         }
                     }
                 }
@@ -40,10 +48,5 @@ namespace AirportTicketBookingSystem.Utilties
                 }
             }
         }
-        public async static Task GenerateFlightsAsync()
-        {
-            await FlightsRepository.ImportFromCsvAsync();
-        }
     }
-
 }
